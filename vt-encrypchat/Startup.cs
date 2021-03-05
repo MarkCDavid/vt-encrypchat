@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using vt_encrypchat.Infrastructure.Configuration;
 using vt_encrypchat.Infrastructure.IoC;
 
 namespace vt_encrypchat
@@ -49,6 +50,8 @@ namespace vt_encrypchat
             }
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using vt_encrypchat.Infrastructure.Configuration;
 
 namespace vt_encrypchat.Infrastructure.IoC
 {
@@ -8,6 +9,7 @@ namespace vt_encrypchat.Infrastructure.IoC
         {
             services.AddMongoDB();
             services.AddRepository();
+            services.AddAuthentication();
         }
     }
 }
