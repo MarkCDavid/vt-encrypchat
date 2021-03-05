@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace vt_encrypchat.IoC
+namespace vt_encrypchat.Infrastructure.IoC
 {
     public static class IoC
     {

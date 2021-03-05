@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using vt_encrypchat.IoC;
+using vt_encrypchat.Infrastructure.IoC;
 
 namespace vt_encrypchat
 {
