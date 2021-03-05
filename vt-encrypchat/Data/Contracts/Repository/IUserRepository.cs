@@ -1,13 +1,11 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using vt_encrypchat.Data.Entity;
 
 namespace vt_encrypchat.Data.Contracts.Repository
 {
-    public interface IUserRepository
+    public interface IUserRepository: IBaseRepository<User>
     {
-        void SaveUser(User user);
-        
-        IList<User> GetUsers(string name = "");
-        User GetUser(int id);
+        Task<IEnumerable<User>> GetUsers(string name = "");
     }
 }

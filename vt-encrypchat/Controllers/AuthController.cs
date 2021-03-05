@@ -27,13 +27,7 @@ namespace vt_encrypchat.Controllers
         [Produces("application/json")]
         public IActionResult SignUp([FromBody]SignUpViewModel signUpViewModel)
         {
-            _userRepository.SaveUser(new User
-            {
-                DisplayName = signUpViewModel.Username,
-                Username = signUpViewModel.Username,
-                Password = signUpViewModel.Password
-            });
-            return Ok();
+            return Ok(signUpViewModel);
         }
         
         [HttpPost("signIn")]

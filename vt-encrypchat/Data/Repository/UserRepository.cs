@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using vt_encrypchat.Data.Contracts.MongoDB;
@@ -8,30 +9,23 @@ using vt_encrypchat.Data.Entity;
 
 namespace vt_encrypchat.Data.Repository
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        private readonly IMongoContext _mongoContext;
-        private readonly IMongoCollection<User> _collection;
-        
-        public UserRepository(IMongoContext mongoContext)
+        public UserRepository(IMongoContext mongoContext) : base(mongoContext, "users")
         {
-            _mongoContext = mongoContext;
-            _collection = mongoContext.DefaultDatabase.GetCollection<User>("users");
+            
         }
 
-        public void SaveUser(User user)
+        public async Task<IEnumerable<User>> GetUsers(string name = null)
         {
-            _collection.InsertOne(user);
-        }
-        
-        public IList<User> GetUsers(string name)
-        {
-            return _collection.Find(user => true).ToList();
-        }
+            FilterDefinition<User> filter = FilterDefinition<User>.Empty;
+            if (name != null)
+            {
+                FilterDefinitionBuilder<User> builder = Builders<User>.Filter;
+                filter = builder.Eq(t => t.DisplayName, name);
+            }
 
-        public User GetUser(int id)
-        {
-            return _collection.Find(user => user.ID == id).FirstOrDefault();
+            return await GetAll(filter);
         }
     }
 }
