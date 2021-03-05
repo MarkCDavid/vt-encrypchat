@@ -1,6 +1,6 @@
-namespace vt_encrypchat.Config
+namespace vt_encrypchat.Infrastructure.MongoDb
 {
-    public class MongoDBConfig
+    public class MongoDbConfig
     {
         public string ConnectionString { get; set; }
         public string DefaultDatabase { get; set; }

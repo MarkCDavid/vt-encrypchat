@@ -1,16 +1,16 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using vt_encrypchat.Config;
 using vt_encrypchat.Data.Contracts.MongoDB;
+using vt_encrypchat.Infrastructure.MongoDb;
 
 namespace vt_encrypchat.Data.MongoDB
 {
     public class MongoContext: IMongoContext
     {
         
-        public MongoContext(IOptionsMonitor<MongoDBConfig> mongoOptionsMonitor)
+        public MongoContext(IOptionsMonitor<MongoDbConfig> mongoOptionsMonitor)
         {
-            MongoDBConfig mongoDbConfig = mongoOptionsMonitor.CurrentValue;
+            MongoDbConfig mongoDbConfig = mongoOptionsMonitor.CurrentValue;
             
             Client = new MongoClient(mongoDbConfig.ConnectionString);
             DefaultDatabase = Client.GetDatabase(mongoDbConfig.DefaultDatabase);

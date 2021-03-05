@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using vt_encrypchat.Config;
+using vt_encrypchat.Infrastructure.MongoDb;
 
 namespace vt_encrypchat.Infrastructure.IoC
 {
@@ -8,7 +8,7 @@ namespace vt_encrypchat.Infrastructure.IoC
     {
         public static void AddConfig(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<MongoDBConfig>(configuration.GetSection("MongoDB"));
+            services.Configure<MongoDbConfig>(configuration.GetSection("MongoDB"));
         }
     }
 }
