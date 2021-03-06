@@ -1,4 +1,4 @@
-namespace vt_encrypchat.Infrastructure.MongoDb
+namespace vt_encrypchat.Infrastructure.Configuration.Model
 {
     public class MongoDbConfig
     {

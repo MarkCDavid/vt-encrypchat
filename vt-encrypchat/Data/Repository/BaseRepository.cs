@@ -22,13 +22,24 @@ namespace vt_encrypchat.Data.Repository
             return await cursor.ToListAsync();
         }
         
+        public async Task<T> Get(FilterDefinition<T> filter)
+        {
+            var cursor = await Collection.FindAsync(filter);
+            return await cursor.FirstOrDefaultAsync();
+        }
+        
         public async Task<T> Get(int id)
         {
             var cursor = await Collection.FindAsync(t => t.Id == id);
             return await cursor.FirstOrDefaultAsync();
         }
         
-        public async Task Save(T entity)
+        public async Task Create(T entity)
+        {
+            await Collection.InsertOneAsync(entity);
+        }
+        
+        public async Task Update(T entity)
         {
             await Collection.FindOneAndReplaceAsync(t => t.Id == entity.Id, entity);
         }

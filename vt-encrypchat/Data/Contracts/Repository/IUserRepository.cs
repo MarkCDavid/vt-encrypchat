@@ -6,6 +6,7 @@ namespace vt_encrypchat.Data.Contracts.Repository
 {
     public interface IUserRepository: IBaseRepository<User>
     {
-        Task<IEnumerable<User>> GetUsers(string name = "");
+        Task<User> GetUserByUsername(string name);
+        Task<IEnumerable<User>> GetUsers(string displayName = "");
     }
 }

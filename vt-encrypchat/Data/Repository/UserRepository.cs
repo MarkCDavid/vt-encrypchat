@@ -16,14 +16,27 @@ namespace vt_encrypchat.Data.Repository
             
         }
 
-        public async Task<IEnumerable<User>> GetUsers(string name = null)
+        public async Task<User> GetUserByUsername(string username)
         {
-            FilterDefinition<User> filter = FilterDefinition<User>.Empty;
-            if (name != null)
+            if (username == null)
+                throw new ArgumentException(null, nameof(username));
+            
+            var builder = Builders<User>.Filter;
+            var filter = builder.Eq(t => t.Username, username);
+
+            return await Get(filter);
+        }
+
+        public async Task<IEnumerable<User>> GetUsers(string displayName = null)
+        {
+            if (displayName == null)
             {
-                FilterDefinitionBuilder<User> builder = Builders<User>.Filter;
-                filter = builder.Eq(t => t.DisplayName, name);
+                return await GetAll(FilterDefinition<User>.Empty);
             }
+            
+            var builder = Builders<User>.Filter;
+            var filter = builder
+                .Regex(t => t.DisplayName, new BsonRegularExpression(displayName));
 
             return await GetAll(filter);
         }

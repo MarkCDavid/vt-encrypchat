@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using vt_encrypchat.Data.Contracts.MongoDB;
-using vt_encrypchat.Infrastructure.MongoDb;
+using vt_encrypchat.Infrastructure.Configuration.Model;
 
 namespace vt_encrypchat.Data.MongoDB
 {

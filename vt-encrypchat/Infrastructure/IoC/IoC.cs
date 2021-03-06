@@ -10,6 +10,7 @@ namespace vt_encrypchat.Infrastructure.IoC
             services.AddMongoDB();
             services.AddRepository();
             services.AddAuthentication();
+            services.AddServices();
         }
     }
 }

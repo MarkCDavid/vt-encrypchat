@@ -1,19 +1,15 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using vt_encrypchat.Infrastructure.Authentication;
-using vt_encrypchat.Infrastructure.MongoDb;
+using vt_encrypchat.Infrastructure.Configuration.Model;
 
-namespace vt_encrypchat.Infrastructure.IoC
+namespace vt_encrypchat.Infrastructure.Configuration
 {
     public static class Config
     {
         public static void AddConfig(this IServiceCollection services, IConfiguration configuration)
         {
             RegisterConfiguration<MongoDbConfig>(services, configuration, "MongoDB");
-            var jwtTokenConfig =
-                RegisterConfiguration<JwtTokenConfig, JwtTokenConfig>(services, configuration, "JwtToken");
-            
-            Configuration.Authentication.ConfigureAuthentication(services, jwtTokenConfig);
+            Authentication.ConfigureAuthentication(services);
         }
 
 

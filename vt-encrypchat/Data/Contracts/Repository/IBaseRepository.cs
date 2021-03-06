@@ -9,7 +9,8 @@ namespace vt_encrypchat.Data.Contracts.Repository
     {
         Task<IEnumerable<T>> GetAll(FilterDefinition<T> filter = null);
         Task<T> Get(int id);
-        Task Save(T entity);
+        Task Create(T entity);
+        Task Update(T entity);
         Task Delete(T entity);
     }
 }
