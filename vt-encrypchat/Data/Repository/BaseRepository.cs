@@ -22,7 +22,7 @@ namespace vt_encrypchat.Data.Repository
             return await cursor.ToListAsync();
         }
 
-        public async Task<T> Get(int id)
+        public async Task<T> Get(string id)
         {
             var cursor = await Collection.FindAsync(t => t.Id == id);
             return await cursor.FirstOrDefaultAsync();

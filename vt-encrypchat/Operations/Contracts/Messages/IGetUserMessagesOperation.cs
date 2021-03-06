@@ -29,7 +29,7 @@ namespace vt_encrypchat.Operations.Contracts.Messages
         
         public class User
         {
-            public int Id { get; set; }
+            public string Id { get; set; }
             public string DisplayName { get; set; }
             public string GpgKey { get; set; }
         }

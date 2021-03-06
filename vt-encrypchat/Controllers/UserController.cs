@@ -45,7 +45,7 @@ namespace vt_encrypchat.Controllers
 
         [HttpGet("{id}")]
         [Produces("application/json")]
-        public new async Task<IActionResult> User([FromRoute] int id)
+        public new async Task<IActionResult> User([FromRoute] string id)
         {
             GetUserByIdRequest request = new GetUserByIdRequest
             {

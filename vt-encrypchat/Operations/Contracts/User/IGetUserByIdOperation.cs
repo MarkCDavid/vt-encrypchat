@@ -9,7 +9,7 @@ namespace vt_encrypchat.Operations.Contracts.User
 
     public class GetUserByIdRequest
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
     
     public class GetUserByIdResponse
@@ -18,7 +18,7 @@ namespace vt_encrypchat.Operations.Contracts.User
 
         public class UserModel
         {
-            public int Id { get; set; }
+            public string Id { get; set; }
             public string DisplayName { get; set; }
             public string GpgKey { get; set; }
         }

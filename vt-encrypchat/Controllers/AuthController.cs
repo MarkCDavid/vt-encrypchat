@@ -53,7 +53,7 @@ namespace vt_encrypchat.Controllers
 
             _logger.LogInformation($"User [{signUpViewModel.Username}] created an account in the system.");
 
-            return Redirect("/");
+            return Ok();
         }
 
         [AllowAnonymous]
@@ -79,14 +79,14 @@ namespace vt_encrypchat.Controllers
 
             _logger.LogInformation($"User [{loginViewModel.Username}] logged in the system.");
 
-            return Redirect("/");
+            return Ok();
         }
 
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return Redirect("/");
+            return Ok();
         }
     }
 }
