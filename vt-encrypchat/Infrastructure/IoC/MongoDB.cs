@@ -4,9 +4,9 @@ using vt_encrypchat.Data.MongoDB;
 
 namespace vt_encrypchat.Infrastructure.IoC
 {
-    public static class MongoDB
+    public static class MongoDb
     {
-        public static void AddMongoDB(this IServiceCollection services)
+        public static void AddMongoDb(this IServiceCollection services)
         {
             services.AddSingleton<IMongoContext, MongoContext>();
         }

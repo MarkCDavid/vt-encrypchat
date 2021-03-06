@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using MongoDB.Bson.Serialization.Attributes;
 
-namespace vt_encrypchat.Data.Entity
+namespace vt_encrypchat.Domain.Entity
 {
     public class User : BaseEntity
     {
@@ -11,7 +10,7 @@ namespace vt_encrypchat.Data.Entity
         public string DisplayName { get; set; }
         public List<GpgKey> GpgKeys { get; set; }
     }
-    
+
     public class GpgKey
     {
         public string Value { get; set; }

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.DependencyInjection;
 
-
 namespace vt_encrypchat.Infrastructure.Configuration
 {
     public static class Authentication

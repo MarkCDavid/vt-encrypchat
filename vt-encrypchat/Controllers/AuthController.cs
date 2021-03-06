@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -8,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using vt_encrypchat.Services.Contracts;
+using vt_encrypchat.Operations.Contracts.User;
 using vt_encrypchat.WebModels;
 
 namespace vt_encrypchat.Controllers
@@ -18,62 +15,78 @@ namespace vt_encrypchat.Controllers
     [Route("[controller]")]
     public class AuthController : ControllerBase
     {
+        private readonly ICheckUserCredentialValidityOperation _checkUserCredentialValidityOperation;
+        private readonly ICreateUserOperation _createUserOperation;
+        private readonly IGetUserExistsOperation _getUserExistsOperation;
         private readonly ILogger<AuthController> _logger;
-        private readonly IUserService _userService;
 
-        public AuthController(ILogger<AuthController> logger, IUserService userService)
+        public AuthController(
+            ILogger<AuthController> logger,
+            ICheckUserCredentialValidityOperation checkUserCredentialValidityOperation,
+            ICreateUserOperation createUserOperation,
+            IGetUserExistsOperation getUserExistsOperation)
         {
             _logger = logger;
-            _userService = userService;
+            _checkUserCredentialValidityOperation = checkUserCredentialValidityOperation;
+            _createUserOperation = createUserOperation;
+            _getUserExistsOperation = getUserExistsOperation;
         }
-        
+
         [AllowAnonymous]
         [HttpPost("signup")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public async Task<IActionResult> SignUp([FromBody]SignUpViewModel signUpViewModel)
+        public async Task<IActionResult> SignUp([FromBody] SignUpViewModel signUpViewModel)
         {
-            bool userExists = await _userService.UserExists(signUpViewModel.Username);
-            if (userExists)
-            {
-                return BadRequest();
-            }
+            GetUserExistsRequest userExistsRequest = new GetUserExistsRequest { Username = signUpViewModel.Username };
+            GetUserExistsResponse userExistsResponse = await _getUserExistsOperation.Execute(userExistsRequest);
 
-            await _userService.CreateUser(signUpViewModel.Username, signUpViewModel.Password);
-            
-            return Ok(signUpViewModel);
+            if (userExistsResponse.UserExists) return BadRequest();
+
+            CreateUserRequest createUserRequest = new CreateUserRequest
+            {
+                Username = signUpViewModel.Username,
+                Password = signUpViewModel.Password
+            };
+
+            await _createUserOperation.Execute(createUserRequest);
+
+            _logger.LogInformation($"User [{signUpViewModel.Username}] created an account in the system.");
+
+            return Redirect("/");
         }
-        
+
         [AllowAnonymous]
         [HttpPost("login")]
         [Consumes("application/json")]
         [Produces("application/json")]
-        public async Task<IActionResult> Login([FromBody]LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel loginViewModel)
         {
-            bool userCredentialsValid =
-                await _userService.ValidUserCredentials(loginViewModel.Username, loginViewModel.Password);
-            
-            if (!userCredentialsValid)
+            var request = new CheckUserCredentialValidityRequest
             {
-                return Unauthorized();
-            }
+                Username = loginViewModel.Username,
+                Password = loginViewModel.Password
+            };
 
-            Claim[] claims = { new(ClaimTypes.Name, loginViewModel.Username) };
-            ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+            var response = await _checkUserCredentialValidityOperation.Execute(request);
+
+            if (!response.Valid) return Unauthorized();
+
+            Claim[] claims = {new(ClaimTypes.Name, loginViewModel.Username)};
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(principal);
-            
+
             _logger.LogInformation($"User [{loginViewModel.Username}] logged in the system.");
-            
+
             return Redirect("/");
         }
-        
+
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
             return Redirect("/");
         }
-        
     }
 }

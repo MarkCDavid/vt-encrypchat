@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using vt_encrypchat.Data.Entity;
+using vt_encrypchat.Domain.Entity;
 
 namespace vt_encrypchat.Data.Contracts.Repository
 {
