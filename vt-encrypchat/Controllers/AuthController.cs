@@ -18,18 +18,21 @@ namespace vt_encrypchat.Controllers
         private readonly ICheckUserCredentialValidityOperation _checkUserCredentialValidityOperation;
         private readonly ICreateUserOperation _createUserOperation;
         private readonly IGetUserExistsOperation _getUserExistsOperation;
+        private readonly IGetUserByUsernameOperation _getUserByUsernameOperation;
         private readonly ILogger<AuthController> _logger;
 
         public AuthController(
             ILogger<AuthController> logger,
             ICheckUserCredentialValidityOperation checkUserCredentialValidityOperation,
             ICreateUserOperation createUserOperation,
-            IGetUserExistsOperation getUserExistsOperation)
+            IGetUserExistsOperation getUserExistsOperation,
+            IGetUserByUsernameOperation getUserByUsernameOperation)
         {
             _logger = logger;
             _checkUserCredentialValidityOperation = checkUserCredentialValidityOperation;
             _createUserOperation = createUserOperation;
             _getUserExistsOperation = getUserExistsOperation;
+            _getUserByUsernameOperation = getUserByUsernameOperation;
         }
 
         [AllowAnonymous]
@@ -62,17 +65,29 @@ namespace vt_encrypchat.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel loginViewModel)
         {
-            var request = new CheckUserCredentialValidityRequest
+            var validityRequest = new CheckUserCredentialValidityRequest
             {
                 Username = loginViewModel.Username,
                 Password = loginViewModel.Password
             };
 
-            var response = await _checkUserCredentialValidityOperation.Execute(request);
+            var validityResponse = await _checkUserCredentialValidityOperation.Execute(validityRequest);
 
-            if (!response.Valid) return Unauthorized();
+            if (!validityResponse.Valid) return Unauthorized();
 
-            Claim[] claims = {new(ClaimTypes.Name, loginViewModel.Username)};
+            var getUserRequest = new GetUserByUsernameRequest
+            {
+                Username = loginViewModel.Username
+            };
+
+            var getUserResponse = await _getUserByUsernameOperation.Execute(getUserRequest);
+
+            Claim[] claims =
+            {
+                new(ClaimTypes.Name, getUserResponse.User.Username),
+                new(ClaimTypes.NameIdentifier, getUserResponse.User.Id),
+            };
+            
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(principal);

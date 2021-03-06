@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using vt_encrypchat.Operations.Contracts.Messages;
 using vt_encrypchat.Operations.Contracts.User;
 using vt_encrypchat.Operations.User;
 
@@ -13,6 +14,9 @@ namespace vt_encrypchat.Infrastructure.IoC
             services.AddScoped<IGetUserExistsOperation, GetUserExistsOperation>();
             services.AddScoped<ISearchUserByDisplayNameOperation, SearchUserByDisplayNameOperation>();
             services.AddScoped<IGetUserByIdOperation, GetUserByIdOperation>();
+            services.AddScoped<IGetUserByUsernameOperation, GetUserByUsernameOperation>();
+            services.AddScoped<IGetUserMessagesOperation, GetUserMessagesOperation>();
+            services.AddScoped<ISendUserMessageOperation, SendUserMessageOperation>();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace vt_encrypchat.Operations.Contracts.Messages
 
     public class GetUserMessagesRequest
     {
-        public int UserId { get; set; }
+        public string Id { get; set; }
         public int Count { get; set; }
     }
 

@@ -12,8 +12,8 @@ namespace vt_encrypchat.Domain.Entity
 
     public class MessageUser
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string DisplayName { get; set; }
-        public GpgKey GpgKey { get; set; }
+        public string GpgKey { get; set; }
     }
 }

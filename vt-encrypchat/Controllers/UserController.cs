@@ -15,16 +15,16 @@ namespace vt_encrypchat.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
-        private readonly IGetUserByIdOperation _getUserByIdOperation;
+        private readonly IGetUserByIdOperation _getUserByUsernameOperation;
         private readonly ISearchUserByDisplayNameOperation _searchUserByDisplayNameOperation;
 
         public UserController(
             ILogger<UserController> logger,
-            IGetUserByIdOperation getUserByIdOperation,
+            IGetUserByIdOperation getUserByUsernameOperation,
             ISearchUserByDisplayNameOperation searchUserByDisplayNameOperation)
         {
             _logger = logger;
-            _getUserByIdOperation = getUserByIdOperation;
+            _getUserByUsernameOperation = getUserByUsernameOperation;
             _searchUserByDisplayNameOperation = searchUserByDisplayNameOperation;
         }
         
@@ -52,7 +52,7 @@ namespace vt_encrypchat.Controllers
                 Id = id
             };
             
-            GetUserByIdResponse response = await _getUserByIdOperation.Execute(request);
+            GetUserByIdResponse response = await _getUserByUsernameOperation.Execute(request);
             UserViewModel mapped = response.MapToViewModel();
             return Ok(mapped);
         }
