@@ -55,7 +55,7 @@ namespace vt_encrypchat.Controllers
         }
 
 
-        [HttpGet("{id}")]
+        [HttpPost("{id}")]
         [Produces("application/json")]
         public async Task<IActionResult> GetUserMessages(
             [FromRoute] string id, 

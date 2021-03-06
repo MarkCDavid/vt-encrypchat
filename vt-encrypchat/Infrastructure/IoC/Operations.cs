@@ -14,6 +14,7 @@ namespace vt_encrypchat.Infrastructure.IoC
             services.AddScoped<IGetUserExistsOperation, GetUserExistsOperation>();
             services.AddScoped<ISearchUserByDisplayNameOperation, SearchUserByDisplayNameOperation>();
             services.AddScoped<IGetUserByIdOperation, GetUserByIdOperation>();
+            services.AddScoped<IUpdateUserOperation, UpdateUserOperation>();
             services.AddScoped<IGetUserByUsernameOperation, GetUserByUsernameOperation>();
             services.AddScoped<IGetUserMessagesOperation, GetUserMessagesOperation>();
             services.AddScoped<ISendUserMessageOperation, SendUserMessageOperation>();

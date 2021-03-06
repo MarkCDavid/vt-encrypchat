@@ -15,5 +15,14 @@ namespace vt_encrypchat.Domain.Entity
     {
         public string Value { get; set; }
         public DateTime Date { get; set; }
+
+        public static GpgKey Create(string value)
+        {
+            return new()
+            {
+                Value = value,
+                Date = DateTime.Now
+            };
+        }
     }
 }
