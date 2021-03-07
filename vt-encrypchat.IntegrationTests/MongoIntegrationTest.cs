@@ -11,7 +11,7 @@ namespace vt_encrypchat.IntegrationTests
     {
         private static MongoDbRunner _runner;
 
-        internal static IMongoContext CreateMongoContext()
+        internal static IMongoContext SetUpMongoContext()
         {
             _runner = MongoDbRunner.Start();
 
@@ -24,6 +24,11 @@ namespace vt_encrypchat.IntegrationTests
                 });
 
             return new MongoContext(optionsMonitorMock.Object);
+        }
+        
+        internal static void TearDownMongoContext()
+        {
+            _runner.Dispose();
         }
     }
 }

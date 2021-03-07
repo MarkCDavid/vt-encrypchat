@@ -14,12 +14,21 @@ namespace vt_encrypchat.IntegrationTests.Repository
         private DummyRepository _dummyRepository; 
         private IMongoCollection<DummyEntity> _mongoCollection;
         
-        [OneTimeSetUp]
-        public void ClassInit()
+        [SetUp]
+        public void SetUp()
         {
-            _mongoContext = CreateMongoContext();
+            _mongoContext = SetUpMongoContext();
             _dummyRepository = new DummyRepository(_mongoContext);
             _mongoCollection = _dummyRepository.Collection;
+        }
+        
+        [TearDown]
+        public void TearDown()
+        {
+            TearDownMongoContext();
+            _mongoContext = null;
+            _dummyRepository = null;
+            _mongoCollection = null;
         }
         
         [Test]

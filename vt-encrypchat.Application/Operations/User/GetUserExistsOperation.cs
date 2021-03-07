@@ -10,10 +10,10 @@ namespace vt_encrypchat.Application.Operations.User
         private readonly ILogger<GetUserExistsOperation> _logger;
         private readonly IUserRepository _userRepository;
 
-        public GetUserExistsOperation(IUserRepository userRepository, ILogger<GetUserExistsOperation> logger)
+        public GetUserExistsOperation(ILogger<GetUserExistsOperation> logger, IUserRepository userRepository)
         {
-            _userRepository = userRepository;
             _logger = logger;
+            _userRepository = userRepository;
         }
 
         public async Task<GetUserExistsResponse> Execute(GetUserExistsRequest request)

@@ -14,13 +14,21 @@ namespace vt_encrypchat.IntegrationTests.Repository
     public class UserRepositoryTests: MongoIntegrationTest
     {
         private IMongoContext _mongoContext;
-        private IUserRepository _userRepository; 
+        private IUserRepository _userRepository;
         
-        [OneTimeSetUp]
-        public void ClassInit()
+        [SetUp]
+        public void SetUp()
         {
-            _mongoContext = CreateMongoContext();
+            _mongoContext = SetUpMongoContext();
             _userRepository = new UserRepository(_mongoContext);
+        }
+        
+        [TearDown]
+        public void TearDown()
+        {
+            TearDownMongoContext();
+            _mongoContext = null;
+            _userRepository = null;
         }
         
         [Test]

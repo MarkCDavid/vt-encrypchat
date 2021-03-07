@@ -25,7 +25,12 @@ namespace vt_encrypchat.Application.Operations.User
 
         private static GetUserByUsernameResponse MapToResponse(Domain.Entity.User user)
         {
-            return new()
+            if (user == null)
+            {
+                return new GetUserByUsernameResponse();
+            }
+            
+            return new GetUserByUsernameResponse
             {
                 User = new GetUserByUsernameResponse.UserModel
                 {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using vt_encrypchat.Application.Operations.Contracts.User;
@@ -23,9 +24,16 @@ namespace vt_encrypchat.Application.Operations.User
         {
             var user = await _userRepository.Get(request.Id);
 
-            if (request.DisplayName != null) user.DisplayName = request.DisplayName;
+            if (request.DisplayName != null)
+            {
+                user.DisplayName = request.DisplayName;
+            }
 
-            if (request.GpgKey != null) user.GpgKeys.Add(GpgKey.Create(request.GpgKey));
+            if (request.GpgKey != null)
+            {
+                user.GpgKeys ??= new List<GpgKey>();
+                user.GpgKeys.Add(GpgKey.Create(request.GpgKey));
+            }
 
             await _userRepository.Update(user);
         }
