@@ -15,11 +15,11 @@ namespace vt_encrypchat.Presentation.Controllers
     [Route("[controller]")]
     public class AuthController : ControllerBase
     {
+        private readonly ILogger<AuthController> _logger;
         private readonly ICheckUserCredentialValidityOperation _checkUserCredentialValidityOperation;
         private readonly ICreateUserOperation _createUserOperation;
         private readonly IGetUserByUsernameOperation _getUserByUsernameOperation;
         private readonly IGetUserExistsOperation _getUserExistsOperation;
-        private readonly ILogger<AuthController> _logger;
 
         public AuthController(
             ILogger<AuthController> logger,

@@ -9,13 +9,13 @@ using vt_encrypchat.Domain.Entity;
 namespace vt_encrypchat.Data.Repository
 {
     public abstract class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
-    {
+    {   
         protected BaseRepository(IMongoContext mongoContext, string collectionName)
         {
             Collection = mongoContext.DefaultDatabase.GetCollection<T>(collectionName);
         }
 
-        protected IMongoCollection<T> Collection { get; }
+        public IMongoCollection<T> Collection { get; }
 
         public async Task<IEnumerable<T>> GetAll(FilterDefinition<T> filter = null)
         {
