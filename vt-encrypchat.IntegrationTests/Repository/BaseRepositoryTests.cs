@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using NUnit.Framework;
 using vt_encrypchat.Data.Contracts.MongoDB;
+using vt_encrypchat.IntegrationTests.Model;
 
 namespace vt_encrypchat.IntegrationTests.Repository
 {

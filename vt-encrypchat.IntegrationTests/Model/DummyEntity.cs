@@ -1,6 +1,6 @@
 using vt_encrypchat.Domain.Entity;
 
-namespace vt_encrypchat.IntegrationTests.Repository
+namespace vt_encrypchat.IntegrationTests.Model
 {
     public class DummyEntity : BaseEntity
     {

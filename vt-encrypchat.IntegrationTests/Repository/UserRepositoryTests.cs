@@ -27,12 +27,12 @@ namespace vt_encrypchat.IntegrationTests.Repository
         public async Task ShouldHaveSomething()
         {
             var collection = _mongoContext.DefaultDatabase.GetCollection<User>("users");
-            collection.InsertOne(new User()
+            await collection.InsertOneAsync(new User()
             {
                 Id = ObjectId.GenerateNewId().ToString(),
-                Username = "aaaaaa",
-                Password = "aaaaaa",
-                DisplayName = "aaaaaa",
+                Username = "username",
+                Password = "password",
+                DisplayName = "displayName",
                 GpgKeys = new List<GpgKey>()
             });
             var response = await _userRepository.GetAll();
