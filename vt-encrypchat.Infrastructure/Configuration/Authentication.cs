@@ -13,8 +13,8 @@ namespace vt_encrypchat.Infrastructure.Configuration
                 })
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
                 {
-                    options.LoginPath = "/auth/login";
-                    options.LogoutPath = "/auth/logout";
+                    options.LoginPath = "/api/auth/login";
+                    options.LogoutPath = "/api/auth/logout";
                 });
         }
     }

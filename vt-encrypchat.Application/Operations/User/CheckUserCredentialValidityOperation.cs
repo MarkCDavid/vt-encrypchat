@@ -7,10 +7,10 @@ namespace vt_encrypchat.Application.Operations.User
 {
     public class CheckUserCredentialValidityOperation : ICheckUserCredentialValidityOperation
     {
-        private readonly ILogger<GetUserExistsOperation> _logger;
+        private readonly ILogger<CheckUserCredentialValidityOperation> _logger;
         private readonly IUserRepository _userRepository;
 
-        public CheckUserCredentialValidityOperation(ILogger<GetUserExistsOperation> logger,
+        public CheckUserCredentialValidityOperation(ILogger<CheckUserCredentialValidityOperation> logger,
             IUserRepository userRepository)
         {
             _logger = logger;

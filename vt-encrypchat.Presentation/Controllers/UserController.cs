@@ -11,7 +11,7 @@ namespace vt_encrypchat.Presentation.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IGetUserByIdOperation _getUserByUsernameOperation;
@@ -68,7 +68,10 @@ namespace vt_encrypchat.Presentation.Controllers
             [FromRoute] string id,
             [FromBody] UserSettingsViewModel userSettingsViewModel)
         {
-            if (!RequestForAuthorizedId(id)) return Unauthorized();
+            if (!RequestForAuthorizedId(id))
+            {
+                return Unauthorized();
+            }
 
             var request = new UpdateUserRequest
             {

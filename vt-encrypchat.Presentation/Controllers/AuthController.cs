@@ -6,32 +6,31 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using vt_encrypchat.Application.Operations.Contracts.User;
+using vt_encrypchat.Application.Operations.Exceptions;
+using vt_encrypchat.Presentation.WebModels;
 using vt_encrypchat.Presentation.WebModels.Auth;
 
 namespace vt_encrypchat.Presentation.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly ILogger<AuthController> _logger;
         private readonly ICheckUserCredentialValidityOperation _checkUserCredentialValidityOperation;
         private readonly ICreateUserOperation _createUserOperation;
         private readonly IGetUserByUsernameOperation _getUserByUsernameOperation;
-        private readonly IGetUserExistsOperation _getUserExistsOperation;
 
         public AuthController(
             ILogger<AuthController> logger,
             ICheckUserCredentialValidityOperation checkUserCredentialValidityOperation,
             ICreateUserOperation createUserOperation,
-            IGetUserExistsOperation getUserExistsOperation,
             IGetUserByUsernameOperation getUserByUsernameOperation)
         {
             _logger = logger;
             _checkUserCredentialValidityOperation = checkUserCredentialValidityOperation;
             _createUserOperation = createUserOperation;
-            _getUserExistsOperation = getUserExistsOperation;
             _getUserByUsernameOperation = getUserByUsernameOperation;
         }
 
@@ -41,11 +40,6 @@ namespace vt_encrypchat.Presentation.Controllers
         [Produces("application/json")]
         public async Task<IActionResult> SignUp([FromBody] SignUpViewModel signUpViewModel)
         {
-            var userExistsRequest = new GetUserExistsRequest {Username = signUpViewModel.Username};
-            var userExistsResponse = await _getUserExistsOperation.Execute(userExistsRequest);
-
-            if (userExistsResponse.UserExists) return BadRequest();
-
             var createUserRequest = new CreateUserRequest
             {
                 Username = signUpViewModel.Username,
@@ -73,7 +67,10 @@ namespace vt_encrypchat.Presentation.Controllers
 
             var validityResponse = await _checkUserCredentialValidityOperation.Execute(validityRequest);
 
-            if (!validityResponse.Valid) return Unauthorized();
+            if (!validityResponse.Valid)
+            {
+                return Unauthorized(new ErrorViewModel { Error = "Some Generic Error, KEK"});
+            }
 
             var getUserRequest = new GetUserByUsernameRequest
             {

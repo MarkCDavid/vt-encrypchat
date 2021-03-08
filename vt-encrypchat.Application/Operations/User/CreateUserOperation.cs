@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using vt_encrypchat.Application.Operations.Contracts.User;
 using vt_encrypchat.Application.Operations.Exceptions;
+using vt_encrypchat.Application.Operations.Validations.User;
 using vt_encrypchat.Data.Contracts.Repository;
 
 namespace vt_encrypchat.Application.Operations.User
@@ -19,11 +20,12 @@ namespace vt_encrypchat.Application.Operations.User
 
         public async Task Execute(CreateUserRequest request)
         {
+            CreateUserOperationValidations.ValidateRequest(request);
+            
             var response = await _userRepository.GetUserByUsername(request.Username);
             if (response != null)
             {
-                throw new OperationException(
-                    $"Creating a user with username {request.Username}, when such user already exists.");
+                throw new OperationException($"User with username {request.Username} already exists.");
             }
 
             var user = new Domain.Entity.User

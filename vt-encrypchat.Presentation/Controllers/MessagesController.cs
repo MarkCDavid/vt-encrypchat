@@ -12,7 +12,7 @@ namespace vt_encrypchat.Presentation.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class MessagesController : ControllerBase
     {
         private readonly IGetUserMessagesOperation _getUserMessagesResponse;

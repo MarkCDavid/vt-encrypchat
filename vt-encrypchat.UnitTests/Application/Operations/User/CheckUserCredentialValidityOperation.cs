@@ -18,10 +18,10 @@ namespace vt_encrypchat.UnitTests.Application.Operations.User
         [OneTimeSetUp]
         public void ClassInit()
         {
-            _logger = new Mock<ILogger<GetUserExistsOperation>>().Object;
+            _logger = new Mock<ILogger<CheckUserCredentialValidityOperation>>().Object;
         }
 
-        private ILogger<GetUserExistsOperation> _logger;
+        private ILogger<CheckUserCredentialValidityOperation> _logger;
 
 
         [Test]

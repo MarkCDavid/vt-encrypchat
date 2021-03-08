@@ -12,7 +12,6 @@ namespace vt_encrypchat.Infrastructure.IoC
         {
             services.AddScoped<ICheckUserCredentialValidityOperation, CheckUserCredentialValidityOperation>();
             services.AddScoped<ICreateUserOperation, CreateUserOperation>();
-            services.AddScoped<IGetUserExistsOperation, GetUserExistsOperation>();
             services.AddScoped<ISearchUserByDisplayNameOperation, SearchUserByDisplayNameOperation>();
             services.AddScoped<IGetUserByIdOperation, GetUserByIdOperation>();
             services.AddScoped<IUpdateUserOperation, UpdateUserOperation>();

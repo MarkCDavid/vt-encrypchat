@@ -71,5 +71,25 @@ namespace vt_encrypchat.UnitTests.Application.Operations.User
 
             Assert.ThrowsAsync<OperationException>(async () => await operation.Execute(request));
         }
+        
+        
+
+        [Test]
+        public void ShouldThrowIfNoUsernameProvided()
+        {
+            const string username = "";
+            const string password = "Password";
+            
+            var userRepositoryMock = new Mock<IUserRepository>();
+            var operation = new CreateUserOperation(_logger, userRepositoryMock.Object);
+            var request = new CreateUserRequest
+            {
+                Username = username,
+                Password = password
+            };
+
+            Assert.ThrowsAsync<OperationException>(async () => await operation.Execute(request));
+        }
+        
     }
 }
