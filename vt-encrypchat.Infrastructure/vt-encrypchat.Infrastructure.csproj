@@ -19,6 +19,7 @@
     <ItemGroup>
       <ProjectReference Include="..\vt-encrypchat.Application\vt-encrypchat.Application.csproj" />
       <ProjectReference Include="..\vt-encrypchat.Data\vt-encrypchat.Data.csproj" />
+      <ProjectReference Include="..\vt-encrypchat.WebModels\vt-encrypchat.WebModels.csproj" />
     </ItemGroup>
 
 </Project>

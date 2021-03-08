@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vt-encrypchat.IntegrationTe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CFEB2DB3-FA5E-439A-8224-74E04CA07CF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vt-encrypchat.WebModels", "vt-encrypchat.WebModels\vt-encrypchat.WebModels.csproj", "{2FC3EE37-2D22-42C6-9F1A-398046B32783}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{F6597F6D-6046-4864-8E1F-2937B8AFF1AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6597F6D-6046-4864-8E1F-2937B8AFF1AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6597F6D-6046-4864-8E1F-2937B8AFF1AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FC3EE37-2D22-42C6-9F1A-398046B32783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FC3EE37-2D22-42C6-9F1A-398046B32783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FC3EE37-2D22-42C6-9F1A-398046B32783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FC3EE37-2D22-42C6-9F1A-398046B32783}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F6597F6D-6046-4864-8E1F-2937B8AFF1AF} = {CFEB2DB3-FA5E-439A-8224-74E04CA07CF6}

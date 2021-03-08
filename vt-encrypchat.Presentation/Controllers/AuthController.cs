@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using vt_encrypchat.Application.Operations.Contracts.User;
-using vt_encrypchat.Application.Operations.Exceptions;
 using vt_encrypchat.Presentation.WebModels;
 using vt_encrypchat.Presentation.WebModels.Auth;
 
