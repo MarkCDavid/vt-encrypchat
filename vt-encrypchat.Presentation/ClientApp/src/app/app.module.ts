@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {ErrorHandler, NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -9,22 +9,35 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './components/home/home.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSliderModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSliderModule,
+  MatSnackBarModule
+} from '@angular/material';
+import {GlobalErrorHandler} from './services/global-error-handler.service';
+import { ErrorModalComponent } from './components/error-modal/error-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    SignUpComponent
+    SignUpComponent,
+    ErrorModalComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       {path: '', component: HomeComponent, pathMatch: 'full'},
-      {path: 'signup', component: SignUpComponent},
+      {path: 'signUp', component: SignUpComponent},
+      {path: 'signIn', component: HomeComponent},
     ]),
     BrowserAnimationsModule,
     MatFormFieldModule,
@@ -32,8 +45,18 @@ import {MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatS
     MatSliderModule,
     MatCardModule,
     MatButtonModule,
+    MatSnackBarModule,
+    MatDialogModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    }
+  ],
+  entryComponents: [
+    ErrorModalComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

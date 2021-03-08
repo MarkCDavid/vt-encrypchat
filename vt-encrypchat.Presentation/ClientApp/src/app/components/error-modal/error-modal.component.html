@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>ERROR: {{ data.error }}</h1>
+<div mat-dialog-content>
+  <div> {{data.exception.message}}</div>
+  <div *ngIf="data.exception.stackTrace" > {{data.exception.stackTrace}}</div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="closeClick()">Close</button>
+</div>

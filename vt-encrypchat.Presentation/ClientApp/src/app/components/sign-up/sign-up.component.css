@@ -4,3 +4,7 @@
   align-items: center;
   margin-top: 15%;
 }
+
+::ng-deep .red-snackbar {
+  background: #bb0b34;
+}
