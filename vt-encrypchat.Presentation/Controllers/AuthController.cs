@@ -93,6 +93,12 @@ namespace vt_encrypchat.Presentation.Controllers
 
             return Ok();
         }
+        
+        [HttpGet("authenticated")]
+        public ActionResult IsAuthenticated()
+        {
+            return Ok();
+        }
 
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()

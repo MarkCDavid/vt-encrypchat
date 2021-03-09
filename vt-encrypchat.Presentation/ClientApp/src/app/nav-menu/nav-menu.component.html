@@ -3,11 +3,17 @@
     class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3"
   >
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">EncrypChat</a>
+      <a class="navbar-brand" (click)="Home()">EncrypChat</a>
       <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end" >
         <ul class="navbar-nav flex-grow">
           <li>
-            <button mat-raised-button [routerLink]="['/signUp']">Sign Up</button>
+            <button *ngIf="!(isAuthenticated$ | async)"  mat-raised-button (click)="SignUp()">Sign Up</button>
+          </li>
+          <li>
+            <button *ngIf="!(isAuthenticated$ | async)" mat-raised-button (click)="SignIn()">Sign In</button>
+          </li>
+          <li>
+            <button *ngIf="isAuthenticated$ | async" mat-raised-button (click)="SignOut()">Log Out</button>
           </li>
         </ul>
       </div>

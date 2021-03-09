@@ -9,17 +9,90 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './components/home/home.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  MatButtonModule,
-  MatCardModule,
-  MatDialogModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatSliderModule,
-  MatSnackBarModule
-} from '@angular/material';
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTreeModule } from '@angular/material/tree';
+
 import {GlobalErrorHandler} from './services/global-error-handler.service';
 import { ErrorModalComponent } from './components/error-modal/error-modal.component';
+import {ROUTES} from './shared/constants/routes.const';
+import {AuthGuard} from './services/auth-guard.service';
+import { SignInComponent } from './components/sign-in/sign-in.component';
+import {CookieService} from 'ngx-cookie-service';
+import { StoreModule } from '@ngrx/store';
+import {reducers} from './store/reducers';
+import {effects} from './store/effects';
+import {EffectsModule} from '@ngrx/effects';
+
+const angularMaterialImports = [
+  MatAutocompleteModule,
+  MatBadgeModule,
+  MatBottomSheetModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatStepperModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatDividerModule,
+  MatExpansionModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatRippleModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatSortModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule,
+  MatTreeModule,
+];
 
 @NgModule({
   declarations: [
@@ -28,6 +101,7 @@ import { ErrorModalComponent } from './components/error-modal/error-modal.compon
     HomeComponent,
     SignUpComponent,
     ErrorModalComponent,
+    SignInComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -35,20 +109,28 @@ import { ErrorModalComponent } from './components/error-modal/error-modal.compon
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
-      {path: '', component: HomeComponent, pathMatch: 'full'},
-      {path: 'signUp', component: SignUpComponent},
-      {path: 'signIn', component: HomeComponent},
+      {
+        path: ROUTES.Home,
+        component: HomeComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: ROUTES.SignUp,
+        component: SignUpComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: ROUTES.SignIn,
+        component: SignInComponent
+      },
     ]),
     BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSliderModule,
-    MatCardModule,
-    MatButtonModule,
-    MatSnackBarModule,
-    MatDialogModule
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot(effects),
+    ...angularMaterialImports
   ],
   providers: [
+    CookieService,
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler

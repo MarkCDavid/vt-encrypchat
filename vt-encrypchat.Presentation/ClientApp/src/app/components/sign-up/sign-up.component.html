@@ -21,6 +21,9 @@
       <div>
         <button type="submit" mat-raised-button color="primary" (click)="onSignUp()">Sign Up</button>
       </div>
+      <div *ngIf="hasErrors$ | async">
+        {{errors$ | async}}
+      </div>
     </form>
     </mat-card-content>
     </mat-card>

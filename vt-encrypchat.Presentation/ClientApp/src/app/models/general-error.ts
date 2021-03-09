@@ -1,4 +1,4 @@
-interface Error {
+interface GeneralError {
   error: string;
   exception?: {
     message: string;

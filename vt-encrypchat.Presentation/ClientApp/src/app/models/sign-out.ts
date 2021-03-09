@@ -1,0 +1,5 @@
+interface SignOutResponse {
+  routeTo: string;
+}
+
+
