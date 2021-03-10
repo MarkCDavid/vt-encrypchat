@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {getSignInErrors, getSignInHasErrors, getSignUpErrors, getSignUpHasErrors} from '../../store/selectors';
+import {getSignInErrors, getSignInHasErrors} from '../../store/selectors';
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
-import {signIn, signUp} from '../../store/actions';
-import {ROUTES} from '../../shared/constants/routes.const';
+import {signIn} from '../../store/actions';
 
 @Component({
   selector: 'app-sign-in',
@@ -20,7 +18,6 @@ export class SignInComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
     private store: Store<{}>
   ) { }
 
@@ -29,7 +26,8 @@ export class SignInComponent implements OnInit {
     this.errors$ = this.store.select(getSignInErrors);
     this.signInForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]]
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(32)]],
+      gpgkey: [undefined, [Validators.required]]
     }, { updateOn: 'blur'});
   }
 
@@ -39,7 +37,17 @@ export class SignInComponent implements OnInit {
       return;
     }
 
-    this.store.dispatch(signIn({ payload: this.signInForm.getRawValue() as SignInRequest }));
+    const formData = this.signInForm.getRawValue();
+    const signInRequest: SignUpRequest = { username: formData.username, password: formData.password };
+    const gpgKey: File = formData.gpgkey._files[0];
+
+    const reader = new FileReader();
+    reader.addEventListener('load', (event: ProgressEvent) => {
+      const fileReader: FileReader = event.target as FileReader;
+      const pgpKey: string = fileReader.result as string;
+      this.store.dispatch(signIn({ payload: signInRequest, pgpKey: pgpKey }));
+    });
+    reader.readAsText(gpgKey);
   }
 
   hasError(controlName: string, errorName: string) {
@@ -50,4 +58,6 @@ export class SignInComponent implements OnInit {
 
     return control.errors.hasOwnProperty(errorName);
   }
+
+
 }

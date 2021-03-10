@@ -15,6 +15,7 @@ export interface State {
   signInError?: GeneralError;
   signUpError?: GeneralError;
   userAuthenticated: boolean;
+  userPGPKey?: string;
 }
 
 export const initialState: State = {
@@ -26,15 +27,18 @@ const reducer: ActionReducer<State> = createReducer(
   on(signIn, (state) => ({
     ...state,
     signInError: undefined,
+    userPGPKey: undefined
   })),
-  on(signInSuccess, (state) => ({
+  on(signInSuccess, (state, { pgpKey }) => ({
     ...state,
     userAuthenticated: true,
     signInError: undefined,
+    userPGPKey: pgpKey
   })),
   on(signInFail, (state, { errors }) => ({
     ...state,
     signInError: errors,
+    userPGPKey: undefined
   })),
   on(signUp, (state) => ({
     ...state,
@@ -51,17 +55,21 @@ const reducer: ActionReducer<State> = createReducer(
   on(signOutSuccess, (state) => ({
     ...state,
     userAuthenticated: false,
+    userPGPKey: undefined
   })),
   on(checkAuthentication, (state) => ({
-    ...state
+    ...state,
+    userPGPKey: undefined
   })),
-  on(checkAuthenticationSuccess, (state) => ({
+  on(checkAuthenticationSuccess, (state, { pgpKey }) => ({
     ...state,
     userAuthenticated: true,
+    userPGPKey: pgpKey
   })),
   on(checkAuthenticationFail, (state) => ({
     ...state,
     userAuthenticated: false,
+    userPGPKey: undefined,
   }))
 );
 

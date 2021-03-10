@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {checkAuthentication} from './store/actions';
+import {LOCALSTORE} from './shared/constants/local-storage.const';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(checkAuthentication());
+    const pgpKey = localStorage.getItem(LOCALSTORE.PGPKEY);
+    this.store.dispatch(checkAuthentication( { pgpKey: pgpKey }));
   }
 }

@@ -3,6 +3,8 @@ import { AuthState } from '../reducers';
 
 export const getAuthState = createFeatureSelector<AuthState>('auth');
 
+export const getPGPKey = createSelector(getAuthState, (state) => state.userPGPKey);
+
 export const getIsAuthenticated = createSelector(getAuthState, (state) => state.userAuthenticated);
 
 export const getSignUpHasErrors = createSelector(getAuthState, (state) => !!state.signUpError);

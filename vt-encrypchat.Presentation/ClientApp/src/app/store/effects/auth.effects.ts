@@ -16,6 +16,7 @@ import {
 } from '../actions';
 import {tap} from 'rxjs/operators';
 import {ROUTES} from '../../shared/constants/routes.const';
+import {LOCALSTORE} from '../../shared/constants/local-storage.const';
 
 @Injectable()
 export class AuthEffects {
@@ -48,14 +49,16 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(signIn),
-        tap(({payload}) => {
+        tap(( { payload, pgpKey } ) => {
           this.authService.SignIn(payload).subscribe(
             (signInResponse: SignInResponse) => {
               if (signInResponse.success) {
-                this.store.dispatch(signInSuccess({payload: signInResponse}));
+                this.store.dispatch(signInSuccess({payload: signInResponse, pgpKey: pgpKey}));
                 this.store.dispatch(go({ path: ROUTES.Home }));
+                localStorage.setItem(LOCALSTORE.PGPKEY, pgpKey);
               } else {
                 this.store.dispatch(signInFail({errors: {error: signInResponse.error}}));
+                localStorage.removeItem(LOCALSTORE.PGPKEY);
               }
             }
           );
@@ -84,14 +87,18 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(checkAuthentication),
-        tap(() => {
+        tap(( { pgpKey } ) => {
           this.authService.IsAuthenticated().subscribe(
             authenticated => {
-              if (authenticated) {
-                this.store.dispatch(checkAuthenticationSuccess());
-              } else {
+              const authenticatedWithoutPGP = authenticated && !pgpKey;
+              if (!authenticated || authenticatedWithoutPGP) {
+                this.store.dispatch(signOut());
                 this.store.dispatch(checkAuthenticationFail());
                 this.store.dispatch(go({ path: ROUTES.SignIn }));
+                localStorage.removeItem(LOCALSTORE.PGPKEY);
+              } else {
+                this.store.dispatch(checkAuthenticationSuccess( { pgpKey: pgpKey }));
+                localStorage.setItem(LOCALSTORE.PGPKEY, pgpKey);
               }
             }
           );

@@ -55,6 +55,7 @@ import { StoreModule } from '@ngrx/store';
 import {reducers} from './store/reducers';
 import {effects} from './store/effects';
 import {EffectsModule} from '@ngrx/effects';
+import {MaterialFileInputModule} from 'ngx-material-file-input';
 
 const angularMaterialImports = [
   MatAutocompleteModule,
@@ -117,7 +118,6 @@ const angularMaterialImports = [
       {
         path: ROUTES.SignUp,
         component: SignUpComponent,
-        // canActivate: [AuthGuard],
       },
       {
         path: ROUTES.SignIn,
@@ -127,7 +127,8 @@ const angularMaterialImports = [
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot(effects),
-    ...angularMaterialImports
+    ...angularMaterialImports,
+    MaterialFileInputModule
   ],
   providers: [
     CookieService,

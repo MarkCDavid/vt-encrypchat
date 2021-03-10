@@ -14,15 +14,15 @@ export enum AuthActions {
   SignOutSuccess = '[Auth] Sign out success',
 }
 
-export const checkAuthentication = createAction(AuthActions.CheckAuthentication);
+export const checkAuthentication = createAction(AuthActions.CheckAuthentication, props<{ pgpKey: string }>());
 
-export const checkAuthenticationSuccess = createAction(AuthActions.CheckAuthenticationSuccess);
+export const checkAuthenticationSuccess = createAction(AuthActions.CheckAuthenticationSuccess, props<{ pgpKey: string }>());
 
 export const checkAuthenticationFail = createAction(AuthActions.CheckAuthenticationFail);
 
-export const signIn = createAction(AuthActions.SignIn, props<{ payload: SignInRequest }>());
+export const signIn = createAction(AuthActions.SignIn, props<{ payload: SignInRequest, pgpKey: string }>());
 
-export const signInSuccess = createAction(AuthActions.SignInSuccess, props<{ payload: SignInResponse }>());
+export const signInSuccess = createAction(AuthActions.SignInSuccess, props<{ payload: SignInResponse, pgpKey: string }>());
 
 export const signInFail = createAction(AuthActions.SignInFail, props<{ errors: GeneralError }>());
 

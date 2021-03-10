@@ -7,6 +7,7 @@
       <form [formGroup]="signInForm">
         <mat-form-field>
           <input matInput placeholder="Username" formControlName="username"/>
+          <mat-icon matSuffix></mat-icon>
           <mat-error *ngIf="hasError('username', 'required')">Required value</mat-error>
           <mat-error *ngIf="hasError('username', 'minlength')">Too few symbols</mat-error>
           <mat-error *ngIf="hasError('username', 'maxlength')">Too many symbols</mat-error>
@@ -14,9 +15,19 @@
         <br/>
         <mat-form-field>
           <input type="password" matInput placeholder="Password" formControlName="password"/>
+          <mat-icon matSuffix></mat-icon>
           <mat-error *ngIf="hasError('password', 'required')">Required value</mat-error>
           <mat-error *ngIf="hasError('password', 'minlength')">Too few symbols</mat-error>
           <mat-error *ngIf="hasError('password', 'maxlength')">Too many symbols</mat-error>
+        </mat-form-field>
+        <br/>
+        <mat-form-field appearance="outline">
+          <ngx-mat-file-input #removableInput valuePlaceholder="GPG Private Key" formControlName="gpgkey"></ngx-mat-file-input>
+          <mat-icon *ngIf="removableInput.empty" matSuffix>folder</mat-icon>
+          <button mat-icon-button matSuffix *ngIf="!removableInput.empty" (click)="removableInput.clear($event)">
+            <mat-icon>clear</mat-icon>
+          </button>
+          <mat-error *ngIf="hasError('gpgkey', 'required')">Required value</mat-error>
         </mat-form-field>
         <div>
           <button type="submit" mat-raised-button color="primary" (click)="onSignIn()">Sign In</button>
