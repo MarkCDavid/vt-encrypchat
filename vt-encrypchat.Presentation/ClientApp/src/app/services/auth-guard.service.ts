@@ -1,29 +1,27 @@
-import {Injectable, OnInit} from '@angular/core';
-import {AuthService} from './auth.service';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {ROUTES} from '../shared/constants/routes.const';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
-import {FormBuilder} from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {getIsAuthenticated, getSignUpHasErrors} from '../store/selectors';
-import {checkAuthentication, signUp} from '../store/actions';
+import {getIsAuthenticated, getPrivateGPGKey} from '../store/selectors';
+import {checkAuthentication} from '../store/actions';
+import {CheckAuthenticationPayload} from '../store/actions/payloads/auth/check-authentication.payload';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements OnInit, CanActivate {
+export class AuthGuard implements CanActivate {
 
-  public isAuthenticated$: Observable<boolean>;
+  public gpgKey$: Observable<string | undefined>;
 
-  constructor(private store: Store<{}>) { }
-
-  ngOnInit(): void {
-    this.isAuthenticated$ = this.store.select(getIsAuthenticated);
+  constructor(private store: Store<{}>) {
+    this.gpgKey$ = this.store.select(getPrivateGPGKey);
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    this.store.dispatch(checkAuthentication());
-    return this.isAuthenticated$;
+    this.gpgKey$.subscribe(gpgKey => {
+      const payload = { gpgKey: gpgKey} as CheckAuthenticationPayload;
+      this.store.dispatch(checkAuthentication( { payload: payload }));
+    });
+    return this.store.select(getIsAuthenticated);
   }
 }

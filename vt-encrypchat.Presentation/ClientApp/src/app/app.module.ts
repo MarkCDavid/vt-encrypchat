@@ -56,6 +56,7 @@ import {reducers} from './store/reducers';
 import {effects} from './store/effects';
 import {EffectsModule} from '@ngrx/effects';
 import {MaterialFileInputModule} from 'ngx-material-file-input';
+import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 
 const angularMaterialImports = [
   MatAutocompleteModule,
@@ -103,6 +104,7 @@ const angularMaterialImports = [
     SignUpComponent,
     ErrorModalComponent,
     SignInComponent,
+    UserSettingsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -122,6 +124,11 @@ const angularMaterialImports = [
       {
         path: ROUTES.SignIn,
         component: SignInComponent
+      },
+      {
+        path: ROUTES.UserSettings,
+        component: UserSettingsComponent,
+        canActivate: [AuthGuard]
       },
     ]),
     BrowserAnimationsModule,

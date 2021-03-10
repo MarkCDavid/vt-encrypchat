@@ -1,4 +1,4 @@
-interface GeneralError {
+export interface GeneralError {
   error: string;
   exception?: {
     message: string;

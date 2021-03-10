@@ -1,4 +1,4 @@
-namespace vt_encrypchat.Presentation.WebModels.Auth
+namespace WebModels.Auth
 {
     public class LoginViewModel
     {

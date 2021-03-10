@@ -14,10 +14,11 @@ namespace vt_encrypchat.Infrastructure.IoC
             services.AddScoped<ICreateUserOperation, CreateUserOperation>();
             services.AddScoped<ISearchUserByDisplayNameOperation, SearchUserByDisplayNameOperation>();
             services.AddScoped<IGetUserByIdOperation, GetUserByIdOperation>();
-            services.AddScoped<IUpdateUserOperation, UpdateUserOperation>();
+            services.AddScoped<IUpdateUserSettingsOperation, UpdateUserSettingsSettingsOperation>();
             services.AddScoped<IGetUserByUsernameOperation, GetUserByUsernameOperation>();
             services.AddScoped<IGetUserMessagesOperation, GetUserMessagesOperation>();
             services.AddScoped<ISendUserMessageOperation, SendUserMessageOperation>();
+            services.AddScoped<IGetUserSettingsOperation, GetUserSettingsSettingsOperation>();
         }
     }
 }

@@ -7,20 +7,20 @@ using vt_encrypchat.Domain.Entity;
 
 namespace vt_encrypchat.Application.Operations.User
 {
-    public class UpdateUserOperation : IUpdateUserOperation
+    public class UpdateUserSettingsSettingsOperation : IUpdateUserSettingsOperation
     {
-        private readonly ILogger<UpdateUserOperation> _logger;
+        private readonly ILogger<UpdateUserSettingsSettingsOperation> _logger;
         private readonly IUserRepository _userRepository;
 
-        public UpdateUserOperation(
-            ILogger<UpdateUserOperation> logger,
+        public UpdateUserSettingsSettingsOperation(
+            ILogger<UpdateUserSettingsSettingsOperation> logger,
             IUserRepository userRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
         }
 
-        public async Task Execute(UpdateUserRequest request)
+        public async Task Execute(UpdateUseSettingsRequest request)
         {
             var user = await _userRepository.Get(request.Id);
 

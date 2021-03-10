@@ -1,4 +1,8 @@
 import {createAction, props} from '@ngrx/store';
+import {SignInPayload, SignInSuccessPayload} from './payloads/auth/sign-in.payload';
+import {SignUpPayload} from './payloads/auth/sign-up.payload';
+import {GeneralErrorPayload} from './payloads/shared/general-error.payload';
+import {CheckAuthenticationPayload, CheckAuthenticationSuccessPayload} from './payloads/auth/check-authentication.payload';
 
 export enum AuthActions {
   CheckAuthentication = '[Auth] Check Authentication',
@@ -12,26 +16,33 @@ export enum AuthActions {
   SignUpFail = '[Auth] Sign up fail',
   SignOut = '[Auth] Sign out',
   SignOutSuccess = '[Auth] Sign out success',
+  SignOutFail = '[Auth] Sign out fail',
 }
 
-export const checkAuthentication = createAction(AuthActions.CheckAuthentication, props<{ pgpKey: string }>());
+export const checkAuthentication = createAction(AuthActions.CheckAuthentication, props<{ payload: CheckAuthenticationPayload }>());
 
-export const checkAuthenticationSuccess = createAction(AuthActions.CheckAuthenticationSuccess, props<{ pgpKey: string }>());
+export const checkAuthenticationSuccess = createAction(
+  AuthActions.CheckAuthenticationSuccess, props<{ payload: CheckAuthenticationSuccessPayload }>());
 
 export const checkAuthenticationFail = createAction(AuthActions.CheckAuthenticationFail);
 
-export const signIn = createAction(AuthActions.SignIn, props<{ payload: SignInRequest, pgpKey: string }>());
 
-export const signInSuccess = createAction(AuthActions.SignInSuccess, props<{ payload: SignInResponse, pgpKey: string }>());
+export const signIn = createAction(AuthActions.SignIn, props<{ payload: SignInPayload }>());
 
-export const signInFail = createAction(AuthActions.SignInFail, props<{ errors: GeneralError }>());
+export const signInSuccess = createAction(AuthActions.SignInSuccess, props<{ payload: SignInSuccessPayload }>());
 
-export const signUp = createAction(AuthActions.SignUp, props<{ payload: SignUpRequest }>());
+export const signInFail = createAction(AuthActions.SignInFail, props<{ payload: GeneralErrorPayload }>());
 
-export const signUpSuccess = createAction(AuthActions.SignUpSuccess, props<{ payload: SignUpResponse }>());
 
-export const signUpFail = createAction(AuthActions.SignUpFail, props<{ errors: GeneralError }>());
+export const signUp = createAction(AuthActions.SignUp, props<{ payload: SignUpPayload }>());
+
+export const signUpSuccess = createAction(AuthActions.SignUpSuccess);
+
+export const signUpFail = createAction(AuthActions.SignUpFail, props<{ payload: GeneralErrorPayload }>());
+
 
 export const signOut = createAction(AuthActions.SignOut);
 
 export const signOutSuccess = createAction(AuthActions.SignOutSuccess);
+
+export const signOutFail = createAction(AuthActions.SignOutFail);

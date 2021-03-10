@@ -28,6 +28,7 @@
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "bootstrap": "^4.3.1",
     "core-js": "^3.3.3",
+    "eslint": "^7.21.0",
     "jquery": "^3.5.1",
     "ngx-cookie-service": "^11.0.2",
     "ngx-material-file-input": "^2.1.1",

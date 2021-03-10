@@ -10,12 +10,14 @@ import {
   signUpFail,
   signUpSuccess
 } from '../actions';
+import {GeneralError} from '../../models/general-error';
 
 export interface State {
   signInError?: GeneralError;
   signUpError?: GeneralError;
+  userId?: string;
   userAuthenticated: boolean;
-  userPGPKey?: string;
+  privateGPGKey?: string;
 }
 
 export const initialState: State = {
@@ -27,19 +29,22 @@ const reducer: ActionReducer<State> = createReducer(
   on(signIn, (state) => ({
     ...state,
     signInError: undefined,
-    userPGPKey: undefined
   })),
-  on(signInSuccess, (state, { pgpKey }) => ({
+  on(signInSuccess, (state, { payload }) => ({
     ...state,
     userAuthenticated: true,
     signInError: undefined,
-    userPGPKey: pgpKey
+    userId: payload.userId,
+    privateGPGKey: payload.gpgKey
   })),
-  on(signInFail, (state, { errors }) => ({
+  on(signInFail, (state, { payload }) => ({
     ...state,
-    signInError: errors,
-    userPGPKey: undefined
+    signInError: payload.generalError,
+    privateGPGKey: undefined
   })),
+
+
+
   on(signUp, (state) => ({
     ...state,
     signUpError: undefined,
@@ -48,28 +53,31 @@ const reducer: ActionReducer<State> = createReducer(
     ...state,
     signUpError: undefined,
   })),
-  on(signUpFail, (state, { errors }) => ({
+  on(signUpFail, (state, { payload }) => ({
     ...state,
-    signUpError: errors,
+    signUpError: payload.generalError,
   })),
+
+
   on(signOutSuccess, (state) => ({
     ...state,
     userAuthenticated: false,
-    userPGPKey: undefined
+    privateGPGKey: undefined
   })),
+
+
   on(checkAuthentication, (state) => ({
     ...state,
-    userPGPKey: undefined
   })),
-  on(checkAuthenticationSuccess, (state, { pgpKey }) => ({
+  on(checkAuthenticationSuccess, (state, { payload }) => ({
     ...state,
     userAuthenticated: true,
-    userPGPKey: pgpKey
+    privateGPGKey: payload.gpgKey
   })),
   on(checkAuthenticationFail, (state) => ({
     ...state,
     userAuthenticated: false,
-    userPGPKey: undefined,
+    privateGPGKey: undefined,
   }))
 );
 

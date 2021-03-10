@@ -3,5 +3,5 @@ export enum ROUTES {
   HomeRedirect = '/',
   SignUp = 'sign-up',
   SignIn = 'sign-in',
-  Authenticated = 'a'
+  UserSettings = 'settings'
 }

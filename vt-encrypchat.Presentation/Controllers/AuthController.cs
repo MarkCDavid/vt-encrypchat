@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using vt_encrypchat.Application.Operations.Contracts.User;
 using vt_encrypchat.Presentation.WebModels;
 using vt_encrypchat.Presentation.WebModels.Auth;
+using vt_encrypchat.Presentation.WebModels.User;
+using WebModels.Auth;
 
 namespace vt_encrypchat.Presentation.Controllers
 {
@@ -69,7 +71,10 @@ namespace vt_encrypchat.Presentation.Controllers
 
             if (!validityResponse.Valid)
             {
-                return Unauthorized(new ErrorViewModel { Error = "Some Generic Error, KEK"});
+                return Unauthorized(new ErrorViewModel
+                {
+                    Error = "Invalid username or password!"
+                });
             }
 
             var getUserRequest = new GetUserByUsernameRequest
@@ -91,7 +96,8 @@ namespace vt_encrypchat.Presentation.Controllers
 
             _logger.LogInformation($"User [{loginViewModel.Username}] logged in the system.");
 
-            return Ok();
+            var mapped = new UserSignInViewModel { Id = getUserResponse.User.Id };
+            return Ok(mapped);
         }
         
         [HttpGet("authenticated")]

@@ -4,6 +4,8 @@ import {Store} from '@ngrx/store';
 import {signUp} from '../../store/actions';
 import {Observable} from 'rxjs';
 import {getSignUpErrors, getSignUpHasErrors} from '../../store/selectors';
+import {SignUpRequest} from '../../services/models/auth/sign-up.model';
+import {SignUpPayload} from '../../store/actions/payloads/auth/sign-up.payload';
 
 @Component({
   selector: 'app-sign-up',
@@ -12,9 +14,9 @@ import {getSignUpErrors, getSignUpHasErrors} from '../../store/selectors';
 })
 export class SignUpComponent implements OnInit {
 
-  public hasErrors$: Observable<boolean>;
-  public errors$: Observable<string>;
-  public signUpForm: FormGroup;
+  public hasErrors$!: Observable<boolean>;
+  public errors$!: Observable<string>;
+  public signUpForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,7 +40,10 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
-    this.store.dispatch(signUp({ payload: this.signUpForm.getRawValue() as SignUpRequest }));
+    const formData = this.signUpForm.getRawValue();
+    const request = { username: formData.username, password: formData.password } as SignUpRequest;
+    const payload = { request: request} as SignUpPayload;
+    this.store.dispatch(signUp({ payload: payload }));
   }
 
   hasError(controlName: string, errorName: string) {

@@ -13,6 +13,9 @@
             <button *ngIf="!(isAuthenticated$ | async)" mat-raised-button (click)="SignIn()">Sign In</button>
           </li>
           <li>
+            <button *ngIf="isAuthenticated$ | async" mat-raised-button (click)="Settings()">Settings</button>
+          </li>
+          <li>
             <button *ngIf="isAuthenticated$ | async" mat-raised-button (click)="SignOut()">Log Out</button>
           </li>
         </ul>

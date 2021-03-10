@@ -15,10 +15,10 @@ namespace vt_encrypchat.UnitTests.Application.Operations.User
         [OneTimeSetUp]
         public void ClassInit()
         {
-            _logger = new Mock<ILogger<UpdateUserOperation>>().Object;
+            _logger = new Mock<ILogger<UpdateUserSettingsSettingsOperation>>().Object;
         }
 
-        private ILogger<UpdateUserOperation> _logger;
+        private ILogger<UpdateUserSettingsSettingsOperation> _logger;
 
         [Test]
         public async Task ShouldUpdateUserValuesIfRequestUpdateValuesPresent()
@@ -37,9 +37,9 @@ namespace vt_encrypchat.UnitTests.Application.Operations.User
             userRepositoryMock.Setup(repository => repository.Get(It.IsAny<string>()))
                 .Returns(() => Task.FromResult(user));
 
-            var operation = new UpdateUserOperation(_logger, userRepositoryMock.Object);
+            var operation = new UpdateUserSettingsSettingsOperation(_logger, userRepositoryMock.Object);
 
-            var request = new UpdateUserRequest
+            var request = new UpdateUseSettingsRequest
             {
                 Id = "id",
                 DisplayName = newDisplayName,
@@ -68,9 +68,9 @@ namespace vt_encrypchat.UnitTests.Application.Operations.User
             userRepositoryMock.Setup(repository => repository.Get(It.IsAny<string>()))
                 .Returns(() => Task.FromResult(user));
 
-            var operation = new UpdateUserOperation(_logger, userRepositoryMock.Object);
+            var operation = new UpdateUserSettingsSettingsOperation(_logger, userRepositoryMock.Object);
 
-            var request = new UpdateUserRequest {Id = "id"};
+            var request = new UpdateUseSettingsRequest {Id = "id"};
 
             await operation.Execute(request);
 

@@ -4,6 +4,8 @@ import {getSignInErrors, getSignInHasErrors} from '../../store/selectors';
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {signIn} from '../../store/actions';
+import {SignUpRequest} from '../../services/models/auth/sign-up.model';
+import {SignInPayload} from '../../store/actions/payloads/auth/sign-in.payload';
 
 @Component({
   selector: 'app-sign-in',
@@ -12,9 +14,9 @@ import {signIn} from '../../store/actions';
 })
 export class SignInComponent implements OnInit {
 
-  public hasErrors$: Observable<boolean>;
-  public errors$: Observable<string>;
-  public signInForm: FormGroup;
+  public hasErrors$!: Observable<boolean>;
+  public errors$!: Observable<string>;
+  public signInForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,16 +40,17 @@ export class SignInComponent implements OnInit {
     }
 
     const formData = this.signInForm.getRawValue();
-    const signInRequest: SignUpRequest = { username: formData.username, password: formData.password };
-    const gpgKey: File = formData.gpgkey._files[0];
+    const request = { username: formData.username, password: formData.password } as SignUpRequest;
+    const gpgKeyFile = formData.gpgkey._files[0] as File;
 
     const reader = new FileReader();
     reader.addEventListener('load', (event: ProgressEvent) => {
-      const fileReader: FileReader = event.target as FileReader;
-      const pgpKey: string = fileReader.result as string;
-      this.store.dispatch(signIn({ payload: signInRequest, pgpKey: pgpKey }));
+      const fileReader = event.target as FileReader;
+      const gpgKey = fileReader.result as string;
+      const payload = { request: request, gpgKey: gpgKey } as SignInPayload;
+      this.store.dispatch(signIn({ payload: payload }));
     });
-    reader.readAsText(gpgKey);
+    reader.readAsText(gpgKeyFile);
   }
 
   hasError(controlName: string, errorName: string) {

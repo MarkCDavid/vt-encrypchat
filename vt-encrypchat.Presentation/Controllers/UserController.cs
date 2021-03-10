@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using vt_encrypchat.Application.Operations.Contracts.User;
 using vt_encrypchat.Presentation.WebModels.Extensions;
 using vt_encrypchat.Presentation.WebModels.User;
+using WebModels.Extensions;
 
 namespace vt_encrypchat.Presentation.Controllers
 {
@@ -17,18 +18,21 @@ namespace vt_encrypchat.Presentation.Controllers
         private readonly IGetUserByIdOperation _getUserByUsernameOperation;
         private readonly ILogger<UserController> _logger;
         private readonly ISearchUserByDisplayNameOperation _searchUserByDisplayNameOperation;
-        private readonly IUpdateUserOperation _updateUserOperation;
+        private readonly IUpdateUserSettingsOperation _updateUserSettingsOperation;
+        private readonly IGetUserSettingsOperation _getUserSettingsOperation;
 
         public UserController(
             ILogger<UserController> logger,
             IGetUserByIdOperation getUserByUsernameOperation,
             ISearchUserByDisplayNameOperation searchUserByDisplayNameOperation,
-            IUpdateUserOperation updateUserOperation)
+            IUpdateUserSettingsOperation updateUserSettingsOperation,
+            IGetUserSettingsOperation getUserSettingsOperation)
         {
             _logger = logger;
             _getUserByUsernameOperation = getUserByUsernameOperation;
             _searchUserByDisplayNameOperation = searchUserByDisplayNameOperation;
-            _updateUserOperation = updateUserOperation;
+            _updateUserSettingsOperation = updateUserSettingsOperation;
+            _getUserSettingsOperation = getUserSettingsOperation;
         }
 
 
@@ -62,7 +66,7 @@ namespace vt_encrypchat.Presentation.Controllers
             return Ok(mapped);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("settings/{id}")]
         [Produces("application/json")]
         public async Task<IActionResult> UpdateUserSettings(
             [FromRoute] string id,
@@ -73,15 +77,31 @@ namespace vt_encrypchat.Presentation.Controllers
                 return Unauthorized();
             }
 
-            var request = new UpdateUserRequest
+            var request = new UpdateUseSettingsRequest
             {
                 Id = id,
                 DisplayName = userSettingsViewModel.DisplayName,
                 GpgKey = userSettingsViewModel.GpgKey
             };
 
-            await _updateUserOperation.Execute(request);
+            await _updateUserSettingsOperation.Execute(request);
             return Ok();
+        }
+        
+        [HttpGet("settings/{id}")]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetUserSettings([FromRoute] string id)
+        {
+            if (!RequestForAuthorizedId(id))
+            {
+                return Unauthorized();
+            }
+
+            var request = new GetUserSettingsRequest { Id = id };
+            var response = await _getUserSettingsOperation.Execute(request);
+            var mapped = response.MapToViewModel();
+            
+            return Ok(mapped);
         }
 
         private bool RequestForAuthorizedId(string id)

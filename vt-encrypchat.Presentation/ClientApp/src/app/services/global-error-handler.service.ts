@@ -1,6 +1,7 @@
 import {ErrorHandler, Injectable} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {ErrorModalComponent} from '../components/error-modal/error-modal.component';
+import {GeneralError} from '../models/general-error';
 
 
 @Injectable()
@@ -20,7 +21,7 @@ export class GlobalErrorHandler implements ErrorHandler {
       data: error
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
     });
   }
 }

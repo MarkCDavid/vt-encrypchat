@@ -3,5 +3,6 @@ export enum API {
   Authenticated = 'auth/authenticated',
   SignUp = 'auth/signup',
   SignIn = 'auth/login',
-  SignOut = 'auth/logout'
+  SignOut = 'auth/logout',
+  UserSettings = 'user/settings',
 }

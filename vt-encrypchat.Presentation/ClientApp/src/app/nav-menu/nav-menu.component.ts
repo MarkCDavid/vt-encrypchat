@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ROUTES} from '../shared/constants/routes.const';
-import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
-import {getIsAuthenticated, getSignInErrors} from '../store/selectors';
-import {go, signIn, signOut} from '../store/actions';
+import {getIsAuthenticated} from '../store/selectors';
+import {go, signOut} from '../store/actions';
 
 @Component({
   selector: 'app-nav-menu',
@@ -14,7 +13,7 @@ import {go, signIn, signOut} from '../store/actions';
 })
 export class NavMenuComponent implements OnInit {
 
-  public isAuthenticated$: Observable<boolean>;
+  public isAuthenticated$!: Observable<boolean>;
 
   constructor(
     private router: Router,
@@ -35,6 +34,10 @@ export class NavMenuComponent implements OnInit {
 
   SignIn() {
     this.store.dispatch(go({ path: ROUTES.SignIn }));
+  }
+
+  Settings() {
+    this.store.dispatch(go({ path: ROUTES.UserSettings }));
   }
 
   SignOut() {
