@@ -39,7 +39,7 @@ namespace vt_encrypchat.UnitTests.Application.Operations.User
 
             var operation = new UpdateUserSettingsSettingsOperation(_logger, userRepositoryMock.Object);
 
-            var request = new UpdateUseSettingsRequest
+            var request = new UpdateUserSettingsRequest
             {
                 Id = "id",
                 DisplayName = newDisplayName,
@@ -70,7 +70,7 @@ namespace vt_encrypchat.UnitTests.Application.Operations.User
 
             var operation = new UpdateUserSettingsSettingsOperation(_logger, userRepositoryMock.Object);
 
-            var request = new UpdateUseSettingsRequest {Id = "id"};
+            var request = new UpdateUserSettingsRequest {Id = "id"};
 
             await operation.Execute(request);
 

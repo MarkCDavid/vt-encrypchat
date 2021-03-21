@@ -48,7 +48,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import {GlobalErrorHandler} from './services/global-error-handler.service';
 import { ErrorModalComponent } from './components/error-modal/error-modal.component';
 import {ROUTES} from './shared/constants/routes.const';
-import {AuthGuard} from './services/auth-guard.service';
+import {AuthGuard} from './guards/auth-guard.service';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import {CookieService} from 'ngx-cookie-service';
 import { StoreModule } from '@ngrx/store';

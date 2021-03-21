@@ -92,7 +92,13 @@ namespace vt_encrypchat.Presentation.Controllers
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync(principal);
+            
+            var properties = new AuthenticationProperties {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.Add(TimeSpan.FromHours(8))
+            };
+            
+            await HttpContext.SignInAsync(principal, properties);
 
             _logger.LogInformation($"User [{loginViewModel.Username}] logged in the system.");
 

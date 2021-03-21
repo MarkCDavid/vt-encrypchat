@@ -12,11 +12,10 @@ import {
   signOutSuccess,
   signUp,
   signUpFail,
-  signUpSuccess
+  signUpSuccess, toastError, toastOK
 } from '../actions';
 import {tap} from 'rxjs/operators';
 import {ROUTES} from '../../shared/constants/routes.const';
-import {LOCALSTORE} from '../../shared/constants/local-storage.const';
 import {SignInResponse} from '../../services/models/auth/sign-in.model';
 import {mapSignInSuccessPayload} from './mappers/auth/sign-in.mapper';
 import {mapGeneralError} from './mappers/shared/general-error.mapper';
@@ -42,15 +41,33 @@ export class AuthEffects {
               const signInSuccessPayload = mapSignInSuccessPayload(payload, response);
               this.store.dispatch(signInSuccess({ payload: signInSuccessPayload }));
               this.store.dispatch(go({ path: ROUTES.Home }));
-              localStorage.setItem(LOCALSTORE.GPGKEY, signInSuccessPayload.gpgKey);
-              localStorage.setItem(LOCALSTORE.USERID, signInSuccessPayload.userId);
             },
             (generalError: GeneralError) => {
               this.store.dispatch(signInFail({ payload: mapGeneralError(generalError) }));
-              localStorage.removeItem(LOCALSTORE.GPGKEY);
-              localStorage.removeItem(LOCALSTORE.USERID);
             }
           );
+        })
+      ),
+    {dispatch: false}
+  );
+
+  public signInUserSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(signInSuccess),
+        tap(( { payload } ) => {
+          this.store.dispatch(toastOK( { message: 'Signed in successfully!' }));
+        })
+      ),
+    {dispatch: false}
+  );
+
+    public signInUserFail$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(signInFail),
+        tap(( { payload } ) => {
+          this.store.dispatch(toastError( { message: payload.generalError.error }));
         })
       ),
     {dispatch: false}
@@ -102,18 +119,24 @@ export class AuthEffects {
             authenticated => {
               const authenticatedWithoutGPG = authenticated && !payload.gpgKey;
               if (!authenticated || authenticatedWithoutGPG) {
-                this.store.dispatch(signOut());
                 this.store.dispatch(checkAuthenticationFail());
-                this.store.dispatch(go({ path: ROUTES.SignIn }));
-                localStorage.removeItem(LOCALSTORE.GPGKEY);
-                localStorage.removeItem(LOCALSTORE.USERID);
               } else {
                 this.store.dispatch(checkAuthenticationSuccess( { payload: mapCheckAuthenticationSuccessPayload(payload) }));
-                localStorage.setItem(LOCALSTORE.GPGKEY, payload.gpgKey);
-                localStorage.setItem(LOCALSTORE.USERID, payload.userId);
               }
             }
           );
+        })
+      ),
+    {dispatch: false}
+  );
+
+  public checkAuthenticationFail$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(checkAuthenticationFail),
+        tap(( ) => {
+          this.store.dispatch(signOut());
+          this.store.dispatch(go({ path: ROUTES.SignIn }));
         })
       ),
     {dispatch: false}

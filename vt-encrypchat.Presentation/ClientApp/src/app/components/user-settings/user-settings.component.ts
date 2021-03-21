@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
-import {getDisplayName, getPublicGPGKey} from '../../store/selectors';
-import {getUserSettings} from '../../store/actions';
+import {getDisplayName, getPublicGPGKey, getUserId} from '../../store/selectors';
+import {checkAuthenticationFail, getUserSettings, setUserSettings} from '../../store/actions';
 import {GetUserSettingsPayload} from '../../store/actions/payloads/user/get-user-settings.payload';
 import {GetUserSettingsRequest} from '../../services/models/user/get-user-settings.model';
-import {LOCALSTORE} from '../../shared/constants/local-storage.const';
+import {SetUserSettingsRequest} from '../../services/models/user/set-user-settings.model';
+import {skipWhile} from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-settings',
@@ -43,10 +44,11 @@ export class UserSettingsComponent implements OnInit {
       control.setValue(gpgKey);
     });
 
-    const userId = localStorage.getItem(LOCALSTORE.USERID);
-    const request = { userId: userId } as GetUserSettingsRequest;
-    const payload = { request: request } as GetUserSettingsPayload;
-    this.store.dispatch(getUserSettings( { payload: payload }));
+    this.store.select(getUserId).pipe(skipWhile(value => value === undefined)).subscribe(userId => {
+      const request = {userId: userId} as GetUserSettingsRequest;
+      const payload = {request: request} as GetUserSettingsPayload;
+      this.store.dispatch(getUserSettings({payload: payload}));
+    });
   }
 
   onSignUp() {
@@ -55,7 +57,11 @@ export class UserSettingsComponent implements OnInit {
       return;
     }
 
-    // this.store.dispatch(signUp({ payload: this.signUpForm.getRawValue() as SignUpRequest }));
+    this.store.select(getUserId).subscribe(userId => {
+      const request = {userId: userId, ...this.userSettingsForm.getRawValue()} as SetUserSettingsRequest;
+      const payload = {request: request};
+      this.store.dispatch(setUserSettings({payload: payload}));
+    });
   }
 
   hasError(controlName: string, errorName: string) {

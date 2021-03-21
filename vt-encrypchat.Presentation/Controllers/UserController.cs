@@ -77,7 +77,7 @@ namespace vt_encrypchat.Presentation.Controllers
                 return Unauthorized();
             }
 
-            var request = new UpdateUseSettingsRequest
+            var request = new UpdateUserSettingsRequest
             {
                 Id = id,
                 DisplayName = userSettingsViewModel.DisplayName,

@@ -15,5 +15,23 @@ code {
   border-color: #1861ac;
 }
 
+.alert-ok {
+  background-color: green;
+  color: white;
+}
+
+.alert-ok button {
+  border: greenyellow 1px solid;
+}
+
+.alert-error {
+  background-color: red;
+  color: white;
+}
+
+.alert-error button {
+  border: darkred 1px solid;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -4,10 +4,10 @@ namespace vt_encrypchat.Application.Operations.Contracts.User
 {
     public interface IUpdateUserSettingsOperation
     {
-        Task Execute(UpdateUseSettingsRequest request);
+        Task Execute(UpdateUserSettingsRequest request);
     }
 
-    public class UpdateUseSettingsRequest
+    public class UpdateUserSettingsRequest
     {
         public string Id { get; set; }
         public string DisplayName { get; set; }

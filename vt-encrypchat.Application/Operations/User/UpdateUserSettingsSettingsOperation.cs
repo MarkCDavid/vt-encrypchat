@@ -20,7 +20,7 @@ namespace vt_encrypchat.Application.Operations.User
             _userRepository = userRepository;
         }
 
-        public async Task Execute(UpdateUseSettingsRequest request)
+        public async Task Execute(UpdateUserSettingsRequest request)
         {
             var user = await _userRepository.Get(request.Id);
 
