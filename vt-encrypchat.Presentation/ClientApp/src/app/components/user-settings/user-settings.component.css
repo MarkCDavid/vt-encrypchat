@@ -1,0 +1,15 @@
+.settings-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+}
+
+form {
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+

@@ -1,0 +1,12 @@
+<mat-card [ngClass]="{ 'key-ok': hasGPGKey(), 'key-error': !hasGPGKey() }">
+  <mat-card-content>
+    <div class="display-name">
+      {{ user.displayName }}
+      <mat-icon *ngIf="hasGPGKey()">gpp_good</mat-icon>
+      <mat-icon *ngIf="!hasGPGKey()">gpp_bad</mat-icon>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-stroked-button>MESSAGE</button>
+  </mat-card-actions>
+</mat-card>

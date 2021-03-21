@@ -1,0 +1,12 @@
+.display-name {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.key-ok {
+  background: #4d7d4d;
+}
+
+.key-error {
+  background: #7d4d4d;
+}

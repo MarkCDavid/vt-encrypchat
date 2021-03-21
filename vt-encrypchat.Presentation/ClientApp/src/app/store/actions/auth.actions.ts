@@ -44,5 +44,3 @@ export const signUpFail = createAction(AuthActions.SignUpFail, props<{ payload: 
 export const signOut = createAction(AuthActions.SignOut);
 
 export const signOutSuccess = createAction(AuthActions.SignOutSuccess);
-
-export const signOutFail = createAction(AuthActions.SignOutFail);

@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { tap } from 'rxjs/operators';
 import {
+  getUsers,
   getUserSettings,
   getUserSettingsFail,
-  getUserSettingsSuccess,
+  getUserSettingsSuccess, getUsersFail, getUsersSuccess,
   setUserSettings,
   setUserSettingsFail,
   setUserSettingsSuccess, toastError, toastOK
@@ -16,11 +17,15 @@ import {mapGetUserSettingsSuccessPayload} from './mappers/user/get-user-settings
 import {mapSetUserSettingsSuccessPayload} from './mappers/user/set-user-settings.mapper';
 import {mapGeneralError} from './mappers/shared/general-error.mapper';
 import {GeneralError} from '../../models/general-error';
+import {UsersService} from '../../services/users.service';
+import {GetUsersResponse} from '../../services/models/user/get-users.model';
+import {mapGetUsersSuccessPayload} from './mappers/user/get-users.mapper';
 
 @Injectable()
 export class UserEffects {
   constructor(private actions$: Actions,
               private store: Store,
+              private usersService: UsersService,
               private userSettingsService: UserSettingsService) {}
 
   public getUserSettings$ = createEffect(
@@ -64,7 +69,7 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(setUserSettingsSuccess),
         tap(({ payload }) => {
-          this.store.dispatch(toastOK( { message: 'VERY GOOD' }));
+          this.store.dispatch(toastOK( { message: 'Settings updated successfully' }));
         })
       ),
     { dispatch: false }
@@ -75,7 +80,25 @@ export class UserEffects {
       this.actions$.pipe(
         ofType(setUserSettingsFail),
         tap(({ payload }) => {
-          this.store.dispatch(toastError( { message: 'VERY BAD' }));
+          this.store.dispatch(toastError( { message: payload.generalError.error }));
+        })
+      ),
+    { dispatch: false }
+  );
+
+  public getUsers$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(getUsers),
+        tap(({ payload }) => {
+          this.usersService.GetUsers(payload.request).subscribe(
+            (response: GetUsersResponse) => {
+              this.store.dispatch(getUsersSuccess({ payload: mapGetUsersSuccessPayload(response) }));
+            },
+            () => {
+              this.store.dispatch(getUsersFail());
+            }
+          );
         })
       ),
     { dispatch: false }

@@ -58,7 +58,13 @@ export class UserSettingsComponent implements OnInit {
     }
 
     this.store.select(getUserId).subscribe(userId => {
-      const request = {userId: userId, ...this.userSettingsForm.getRawValue()} as SetUserSettingsRequest;
+
+      const rawData = this.userSettingsForm.getRawValue();
+      const request = {
+        userId: userId,
+        displayName: rawData.displayName,
+        gpgKey: rawData.publicGPGKey
+      } as SetUserSettingsRequest;
       const payload = {request: request};
       this.store.dispatch(setUserSettings({payload: payload}));
     });

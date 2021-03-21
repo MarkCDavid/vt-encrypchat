@@ -4,8 +4,7 @@ import {
   checkAuthenticationSuccess,
   signIn,
   signInFail,
-  signInSuccess,
-  signOutSuccess,
+  signInSuccess, signOut,
   signUp,
   signUpFail,
   signUpSuccess
@@ -28,11 +27,11 @@ const reducer: ActionReducer<State> = createReducer(
   initialState,
   on(signIn, (state) => ({
     ...state,
+    userAuthenticated: true,
     signInError: undefined,
   })),
   on(signInSuccess, (state, { payload }) => ({
     ...state,
-    userAuthenticated: true,
     signInError: undefined,
     userId: payload.userId,
     privateGPGKey: payload.gpgKey
@@ -40,6 +39,7 @@ const reducer: ActionReducer<State> = createReducer(
   on(signInFail, (state, { payload }) => ({
     ...state,
     signInError: payload.generalError,
+    userAuthenticated: false,
     userId: undefined,
     privateGPGKey: undefined
   })),
@@ -59,8 +59,7 @@ const reducer: ActionReducer<State> = createReducer(
     signUpError: payload.generalError,
   })),
 
-
-  on(signOutSuccess, (state) => ({
+  on(signOut, (state) => ({
     ...state,
     userAuthenticated: false,
     userId: undefined,

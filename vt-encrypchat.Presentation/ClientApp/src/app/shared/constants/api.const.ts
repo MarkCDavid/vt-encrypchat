@@ -4,5 +4,7 @@ export enum API {
   SignUp = 'auth/signup',
   SignIn = 'auth/login',
   SignOut = 'auth/logout',
+  Users = 'user',
   UserSettings = 'user/settings',
+
 }

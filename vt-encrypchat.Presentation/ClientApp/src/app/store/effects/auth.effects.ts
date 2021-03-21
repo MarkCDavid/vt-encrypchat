@@ -8,8 +8,7 @@ import {
   signIn,
   signInFail,
   signInSuccess,
-  signOut, signOutFail,
-  signOutSuccess,
+  signOut, signOutSuccess,
   signUp,
   signUpFail,
   signUpSuccess, toastError, toastOK
@@ -40,7 +39,6 @@ export class AuthEffects {
             (response: SignInResponse) => {
               const signInSuccessPayload = mapSignInSuccessPayload(payload, response);
               this.store.dispatch(signInSuccess({ payload: signInSuccessPayload }));
-              this.store.dispatch(go({ path: ROUTES.Home }));
             },
             (generalError: GeneralError) => {
               this.store.dispatch(signInFail({ payload: mapGeneralError(generalError) }));
@@ -57,6 +55,18 @@ export class AuthEffects {
         ofType(signInSuccess),
         tap(( { payload } ) => {
           this.store.dispatch(toastOK( { message: 'Signed in successfully!' }));
+          this.store.dispatch(go({ path: ROUTES.Home }));
+        })
+      ),
+    {dispatch: false}
+  );
+
+  public signOutSuccess = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(signOutSuccess),
+        tap(( ) => {
+          this.store.dispatch(go({ path: ROUTES.SignIn }));
         })
       ),
     {dispatch: false}
@@ -98,11 +108,12 @@ export class AuthEffects {
         tap(() => {
           this.authService.SignOut().subscribe(
             () => {
-              this.store.dispatch(signOutSuccess());
               this.store.dispatch(go({ path: ROUTES.Home }));
+              this.store.dispatch(signOutSuccess());
             },
             () => {
-              this.store.dispatch(signOutFail());
+              this.store.dispatch(go({ path: ROUTES.Home }));
+              this.store.dispatch(signOutSuccess());
             }
           );
         })
@@ -135,7 +146,6 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(checkAuthenticationFail),
         tap(( ) => {
-          this.store.dispatch(signOut());
           this.store.dispatch(go({ path: ROUTES.SignIn }));
         })
       ),

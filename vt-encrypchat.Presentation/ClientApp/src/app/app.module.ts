@@ -57,6 +57,8 @@ import {effects} from './store/effects';
 import {EffectsModule} from '@ngrx/effects';
 import {MaterialFileInputModule} from 'ngx-material-file-input';
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import { UserCardComponent } from './components/user-card/user-card.component';
 
 const angularMaterialImports = [
   MatAutocompleteModule,
@@ -105,6 +107,7 @@ const angularMaterialImports = [
     ErrorModalComponent,
     SignInComponent,
     UserSettingsComponent,
+    UserCardComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -115,6 +118,7 @@ const angularMaterialImports = [
       {
         path: ROUTES.Home,
         component: HomeComponent,
+        canActivate: [AuthGuard],
         pathMatch: 'full'
       },
       {
@@ -134,6 +138,9 @@ const angularMaterialImports = [
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot(effects),
+    StoreDevtoolsModule.instrument({
+      maxAge: 100,
+    }),
     ...angularMaterialImports,
     MaterialFileInputModule
   ],

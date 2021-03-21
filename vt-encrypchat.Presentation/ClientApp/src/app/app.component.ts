@@ -43,7 +43,6 @@ export class AppComponent implements OnInit {
       userId: localStorage.getItem(LOCALSTORE.USERID)
     } as CheckAuthenticationPayload;
 
-    console.log(`LocalStorage values\nUserId: ${payload.userId}\nGPG present: ${payload.gpgKey !== undefined}`);
     this.store.dispatch(checkAuthentication( { payload: payload }));
   }
 }

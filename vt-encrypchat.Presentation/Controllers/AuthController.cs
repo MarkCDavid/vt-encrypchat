@@ -115,6 +115,7 @@ namespace vt_encrypchat.Presentation.Controllers
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()
         {
+            _logger.LogInformation($"User [{User?.FindFirst(ClaimTypes.NameIdentifier)?.Value}] logged out from the system.");
             await HttpContext.SignOutAsync();
             return Ok();
         }

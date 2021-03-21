@@ -1,16 +1,25 @@
 import {Action, ActionReducer, createReducer, on} from '@ngrx/store';
 import {
-  getUserSettings, getUserSettingsFail, getUserSettingsSuccess, setUserSettings, setUserSettingsFail, setUserSettingsSuccess,
+  getUserSettings,
+  getUserSettingsFail,
+  getUserSettingsSuccess,
+  getUsersSuccess,
+  setUserSettings,
+  setUserSettingsFail,
+  setUserSettingsSuccess,
 } from '../actions';
+import {User} from '../../models/user';
 
 export interface State {
   displayName: string;
   publicGPGKey: string;
+  users: User[];
 }
 
 export const initialState: State = {
   displayName: '',
   publicGPGKey: '',
+  users: [],
 };
 
 const reducer: ActionReducer<State> = createReducer(
@@ -38,6 +47,10 @@ const reducer: ActionReducer<State> = createReducer(
   })),
   on(setUserSettingsFail, (state) => ({
     ...state,
+  })),
+  on(getUsersSuccess, (state, { payload }) => ({
+    ...state,
+    users: payload.users,
   })),
 );
 
