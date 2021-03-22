@@ -38,7 +38,8 @@ namespace vt_encrypchat.UnitTests.Application.Operations.Messages
 
             var request = new SendUserMessageRequest()
             {
-                Value = string.Empty,
+                FromValue = string.Empty,
+                ToValue = string.Empty,
                 Time = DateTime.Now,
                 From = string.Empty,
                 To = string.Empty,
@@ -64,7 +65,8 @@ namespace vt_encrypchat.UnitTests.Application.Operations.Messages
 
             var request = new SendUserMessageRequest()
             {
-                Value = string.Empty,
+                FromValue = string.Empty,
+                ToValue = string.Empty,
                 Time = DateTime.Now,
                 From = string.Empty,
                 To = string.Empty,

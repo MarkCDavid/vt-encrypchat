@@ -29,17 +29,19 @@ namespace vt_encrypchat.Presentation.Controllers
             _sendUserMessageOperation = sendUserMessageOperation;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{from}/{to}")]
         [Produces("application/json")]
-        public async Task<IActionResult> GetUserMessages(
-            [FromRoute] string id,
+        public async Task<IActionResult> GetConversationMessages(
+            [FromRoute] string from,
+            [FromRoute] string to,
             [FromQuery] int count = 10)
         {
-            if (!RequestForAuthorizedId(id)) return Unauthorized();
+            if (!RequestForAuthorizedId(from)) return Unauthorized();
 
             var request = new GetUserMessagesRequest
             {
-                Id = id,
+                Sender = from,
+                Recipient = to,
                 Count = count
             };
 
@@ -50,20 +52,20 @@ namespace vt_encrypchat.Presentation.Controllers
         }
 
 
-        [HttpPost("{id}")]
+        [HttpPost]
         [Produces("application/json")]
-        public async Task<IActionResult> GetUserMessages(
-            [FromRoute] string id,
-            [FromBody] MessageSendViewModel messageSendViewModel)
+        public async Task<IActionResult> SendMessage(
+            [FromBody] MessageSendViewModel model)
         {
-            if (!RequestForAuthorizedId(id)) return Unauthorized();
+            if (!RequestForAuthorizedId(model.Sender)) return Unauthorized();
 
             var request = new SendUserMessageRequest
             {
-                Value = messageSendViewModel.Message,
+                FromValue = model.SenderValue,
+                ToValue = model.RecipientValue,
                 Time = DateTime.Now,
-                From = id,
-                To = messageSendViewModel.To
+                From = model.Sender,
+                To = model.Recipient
             };
 
             await _sendUserMessageOperation.Execute(request);

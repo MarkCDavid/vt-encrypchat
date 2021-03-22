@@ -10,7 +10,8 @@ namespace vt_encrypchat.Application.Operations.Contracts.Messages
 
     public class SendUserMessageRequest
     {
-        public string Value { get; set; }
+        public string FromValue { get; set; }
+        public string ToValue { get; set; }
         public DateTime Time { get; set; }
         public string From { get; set; }
         public string To { get; set; }

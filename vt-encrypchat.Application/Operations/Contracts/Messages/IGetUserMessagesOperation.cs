@@ -11,7 +11,8 @@ namespace vt_encrypchat.Application.Operations.Contracts.Messages
 
     public class GetUserMessagesRequest
     {
-        public string Id { get; set; }
+        public string Sender { get; set; }
+        public string Recipient { get; set; }
         public int Count { get; set; }
     }
 
@@ -21,7 +22,8 @@ namespace vt_encrypchat.Application.Operations.Contracts.Messages
 
         public class Message
         {
-            public string Value { get; set; }
+            public string FromValue { get; set; }
+            public string ToValue { get; set; }
             public DateTime Time { get; set; }
             public User From { get; set; }
             public User To { get; set; }

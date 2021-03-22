@@ -59,6 +59,8 @@ import {MaterialFileInputModule} from 'ngx-material-file-input';
 import { UserSettingsComponent } from './components/user-settings/user-settings.component';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import { UserCardComponent } from './components/user-card/user-card.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { ChatMessageComponent } from './components/chat-message/chat-message.component';
 
 const angularMaterialImports = [
   MatAutocompleteModule,
@@ -108,6 +110,8 @@ const angularMaterialImports = [
     SignInComponent,
     UserSettingsComponent,
     UserCardComponent,
+    ChatComponent,
+    ChatMessageComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),

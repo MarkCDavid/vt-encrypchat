@@ -6,5 +6,5 @@ export enum API {
   SignOut = 'auth/logout',
   Users = 'user',
   UserSettings = 'user/settings',
-
+  Messages = 'messages',
 }

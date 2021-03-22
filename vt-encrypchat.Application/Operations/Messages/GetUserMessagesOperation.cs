@@ -23,7 +23,10 @@ namespace vt_encrypchat.Application.Operations.Messages
 
         public async Task<GetUserMessagesResponse> Execute(GetUserMessagesRequest request)
         {
-            var messages = await _messageRepository.GetMessages(request.Id, request.Count);
+            var messages = await _messageRepository.GetMessages(
+                request.Sender,
+                request.Recipient,
+                request.Count);
             return MapToResponse(messages);
         }
 
@@ -39,7 +42,8 @@ namespace vt_encrypchat.Application.Operations.Messages
         {
             return new()
             {
-                Value = message.Value,
+                FromValue = message.FromValue,
+                ToValue = message.ToValue,
                 Time = message.Time,
                 From = MapUser(message.From),
                 To = MapUser(message.To)

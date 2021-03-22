@@ -33,7 +33,8 @@ namespace vt_encrypchat.Application.Operations.Messages
 
             var message = new Message
             {
-                Value = request.Value,
+                FromValue = request.FromValue,
+                ToValue = request.ToValue,
                 Time = request.Time,
                 From = MapMessageUser(from),
                 To = MapMessageUser(to)

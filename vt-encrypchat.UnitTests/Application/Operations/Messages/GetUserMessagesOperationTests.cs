@@ -29,12 +29,15 @@ namespace vt_encrypchat.UnitTests.Application.Operations.Messages
             var messageRepositoryMock = new Mock<IMessageRepository>();
 
             messageRepositoryMock.Setup(
-                repository => repository.GetMessages(It.IsAny<string>(), It.IsAny<int>())
+                repository => repository.GetMessages(
+                    It.IsAny<string>(), 
+                    It.IsAny<string>(), 
+                    It.IsAny<int>())
             ).Returns(() => Task.FromResult(Array.Empty<Message>().AsEnumerable()));
 
             var operation = new GetUserMessagesOperation(_logger, messageRepositoryMock.Object);
 
-            var request = new GetUserMessagesRequest {Id = string.Empty, Count = 10};
+            var request = new GetUserMessagesRequest {Sender = string.Empty, Count = 10};
             var response = await operation.Execute(request);
 
             Assert.False(response.Messages.Any());
@@ -43,19 +46,20 @@ namespace vt_encrypchat.UnitTests.Application.Operations.Messages
         [Test]
         public async Task ShouldReturnOneMessageWithMappedProperties()
         {
-            var id = "id";
+            var idTo = "to";
+            var idFrom = "from";
             var message = "hello world";
 
             MessageUser to = new MessageUser()
             {
-                Id = id,
+                Id = idTo,
                 DisplayName = "me",
                 GpgKey = null,
             };
             
             MessageUser from = new MessageUser()
             {
-                Id = "someone",
+                Id = idFrom,
                 DisplayName = "someone",
                 GpgKey = null,
             };
@@ -66,14 +70,16 @@ namespace vt_encrypchat.UnitTests.Application.Operations.Messages
 
             messageRepositoryMock.Setup(
                 repository => repository.GetMessages(
-                    It.Is(id, StringComparer.InvariantCultureIgnoreCase),
+                    It.Is(idFrom, StringComparer.InvariantCultureIgnoreCase),
+                    It.Is(idTo, StringComparer.InvariantCultureIgnoreCase),
                     It.IsAny<int>())
             ).Returns(() => Task.FromResult(
                 new List<Message>
                 {
                     new()
                     {
-                        Value = message,
+                        FromValue = message,
+                        ToValue = message,
                         Time = time,
                         From = from,
                         To = to,
@@ -81,14 +87,15 @@ namespace vt_encrypchat.UnitTests.Application.Operations.Messages
                 }.AsEnumerable()));
 
             var operation = new GetUserMessagesOperation(_logger, messageRepositoryMock.Object);
-            var request = new GetUserMessagesRequest {Id = id, Count = 10};
+            var request = new GetUserMessagesRequest {Sender = idFrom, Count = 10};
             var response = await operation.Execute(request);
             
             Assert.AreEqual(response.Messages.Count(), 1);
 
             var responseMessage = response.Messages.First();
             
-            Assert.AreEqual(responseMessage.Value, message);
+            Assert.AreEqual(responseMessage.FromValue, message);
+            Assert.AreEqual(responseMessage.ToValue, message);
 
             Assert.AreEqual(responseMessage.Time, time);
             
