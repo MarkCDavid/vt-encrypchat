@@ -7,6 +7,7 @@ namespace vt_encrypchat.Domain.Entity
     {
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Salt { get; set; }
         public string DisplayName { get; set; }
         public List<GpgKey> GpgKeys { get; set; }
     }

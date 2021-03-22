@@ -20,20 +20,16 @@ export class AppComponent implements OnInit {
 
     this.store.select(getPrivateGPGKey).pipe(skip(1)).subscribe(gpgKey => {
       if (gpgKey !== undefined) {
-        console.log('Set User GPG');
         localStorage.setItem(LOCALSTORE.GPGKEY, gpgKey);
       } else {
-        console.log('Remove User GPG');
         localStorage.removeItem(LOCALSTORE.GPGKEY);
       }
     });
 
     this.store.select(getUserId).pipe(skip(1)).subscribe(userId => {
       if (userId !== undefined) {
-        console.log('Set User ID');
         localStorage.setItem(LOCALSTORE.USERID, userId);
       } else {
-        console.log('Remove User ID');
         localStorage.removeItem(LOCALSTORE.USERID);
       }
     });

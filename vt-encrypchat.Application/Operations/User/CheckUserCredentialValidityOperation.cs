@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using vt_encrypchat.Application.Operations.Contracts.User;
+using vt_encrypchat.Application.Operations.User.Extensions;
 using vt_encrypchat.Data.Contracts.Repository;
 
 namespace vt_encrypchat.Application.Operations.User
@@ -21,10 +22,16 @@ namespace vt_encrypchat.Application.Operations.User
             CheckUserCredentialValidityRequest request)
         {
             var user = await _userRepository.GetUserByUsername(request.Username);
-            return new CheckUserCredentialValidityResponse
+            if (user == null)
             {
-                Valid = user != null && user.Password.Equals(request.Password)
-            };
+                return CheckUserCredentialValidityResponse.Invalid();
+            }
+            
+            var receivedPassword = UserOperationsExtensions.Hash(request.Password, user.Salt);
+
+            return receivedPassword.Equals(user.Password) 
+                ? CheckUserCredentialValidityResponse.Ok() 
+                : CheckUserCredentialValidityResponse.Invalid();
         }
     }
 }

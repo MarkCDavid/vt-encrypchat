@@ -1,8 +1,8 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using vt_encrypchat.Application.Operations.Contracts.User;
 using vt_encrypchat.Application.Operations.Exceptions;
+using vt_encrypchat.Application.Operations.User.Extensions;
 using vt_encrypchat.Application.Operations.Validations.User;
 using vt_encrypchat.Data.Contracts.Repository;
 
@@ -29,11 +29,13 @@ namespace vt_encrypchat.Application.Operations.User
                 throw new OperationException($"User with username {request.Username} already exists.");
             }
 
+            var salt = UserOperationsExtensions.GenerateSalt();
             var user = new Domain.Entity.User
             {
                 Username = request.Username,
                 DisplayName = request.Username,
-                Password = request.Password
+                Password = UserOperationsExtensions.Hash(request.Password, salt),
+                Salt = salt,
             };
 
             await _userRepository.Create(user);

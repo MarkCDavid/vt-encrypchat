@@ -6,18 +6,22 @@ import {Observable, of, throwError} from 'rxjs';
 import {handleError} from '../shared/handlers/http-error-handler';
 import {SignInRequest, SignInResponse} from './models/auth/sign-in.model';
 import {SignUpRequest} from './models/auth/sign-up.model';
+import {CryptoService} from "./crypto.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private crypto: CryptoService) { }
 
   public SignIn(signInRequest: SignInRequest): Observable<SignInResponse> {
     const url = `${API.Prefix}/${API.SignIn}`;
     const options = {headers: {'Content-Type': 'application/json'}};
-    const body = JSON.stringify(signInRequest);
+    const body = JSON.stringify({
+      ...signInRequest,
+      password: this.crypto.hash(signInRequest.password)
+    });
 
     return this.http.post(url, body, options).pipe(
       map((response: Object) => response as SignInResponse),
@@ -25,10 +29,13 @@ export class AuthService {
     );
   }
 
-  public SignUp(signUpData: SignUpRequest): Observable<void> {
+  public SignUp(signUpRequest: SignUpRequest): Observable<void> {
     const url = `${API.Prefix}/${API.SignUp}`;
     const options = {headers: {'Content-Type': 'application/json'}};
-    const body = JSON.stringify(signUpData);
+    const body = JSON.stringify({
+      ...signUpRequest,
+      password: this.crypto.hash(signUpRequest.password)
+    });
 
     return this.http.post(url, body, options).pipe(
       map(() => {}),

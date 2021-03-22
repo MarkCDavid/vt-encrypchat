@@ -33,8 +33,6 @@ export class HomeComponent implements OnInit {
     const request = { search: '' } as GetUsersRequest;
     const payload = { request: request } as GetUsersPayload;
     this.store.dispatch(getUsers({ payload: payload }));
-
-    this.users$.subscribe(value => console.log(value));
   }
 
 
