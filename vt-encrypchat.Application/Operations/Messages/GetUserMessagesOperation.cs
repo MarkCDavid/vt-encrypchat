@@ -42,6 +42,7 @@ namespace vt_encrypchat.Application.Operations.Messages
         {
             return new()
             {
+                Id = message.Id,
                 FromValue = message.FromValue,
                 ToValue = message.ToValue,
                 Time = message.Time,

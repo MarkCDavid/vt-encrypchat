@@ -22,6 +22,7 @@ namespace vt_encrypchat.Application.Operations.Contracts.Messages
 
         public class Message
         {
+            public string Id { get; set; }
             public string FromValue { get; set; }
             public string ToValue { get; set; }
             public DateTime Time { get; set; }

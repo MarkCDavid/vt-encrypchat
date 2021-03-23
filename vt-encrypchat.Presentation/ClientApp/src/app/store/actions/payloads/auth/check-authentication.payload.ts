@@ -1,9 +1,10 @@
 export interface CheckAuthenticationPayload {
-  gpgKey: string;
+  privateKey: string;
+  publicKey: string;
   userId: string;
 }
 
 export interface CheckAuthenticationSuccessPayload {
-  gpgKey: string;
+  privateKey: string;
   userId: string;
 }

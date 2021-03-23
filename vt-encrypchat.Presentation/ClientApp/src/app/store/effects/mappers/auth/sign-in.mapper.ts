@@ -4,6 +4,6 @@ import {SignInResponse} from '../../../../services/models/auth/sign-in.model';
 export function mapSignInSuccessPayload(payload: SignInPayload, response: SignInResponse): SignInSuccessPayload {
   return {
     userId: response.id,
-    gpgKey: payload.gpgKey
+    privateKey: payload.privateKey
   };
 }

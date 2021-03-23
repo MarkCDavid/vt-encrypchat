@@ -15,7 +15,6 @@ export class CryptoService {
 
   public async sign(value: string, privateKey: string): Promise<string> {
     const _privateKey = await openpgp.readKey({armoredKey: privateKey});
-    await _privateKey.decrypt("");
 
     const unsignedMessage = openpgp.CleartextMessage.fromText(value);
     return await openpgp.sign({
@@ -30,22 +29,21 @@ export class CryptoService {
 
     const signedMessage = await openpgp.readCleartextMessage({
       cleartextMessage: value
-    });
+    }) ;
 
     const verification = await openpgp.verify({
       message: signedMessage,
-      publicKeys: _publicKey
+      publicKeys: _publicKey,
+      streaming: false
     });
 
-    const { valid } = verification.signatures[0];
-    return valid;
+    const { verified } = verification.signatures[0];
+    return await verified || false;
   }
 
   public async encrypt(value: string, publicKey: string): Promise<string> {
     const _publicKey = await openpgp.readKey({ armoredKey: publicKey });
-
     const message = openpgp.Message.fromText(value);
-
     return await openpgp.encrypt({
       message: message,
       publicKeys: _publicKey,
@@ -54,7 +52,6 @@ export class CryptoService {
 
   public async decrypt(value: string, privateKey: string): Promise<string> {
     const _privateKey = await openpgp.readKey({ armoredKey: privateKey });
-    await _privateKey.decrypt("");
 
     const message = await openpgp.readMessage({
       armoredMessage: value
@@ -66,5 +63,10 @@ export class CryptoService {
     });
 
     return decrypted;
+  }
+
+  public async cleartext(value: string): Promise<string> {
+    const message = await openpgp.readCleartextMessage({ cleartextMessage: value} );
+    return message.getText();
   }
 }

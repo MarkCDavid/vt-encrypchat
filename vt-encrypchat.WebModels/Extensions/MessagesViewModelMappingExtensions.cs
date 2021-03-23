@@ -17,6 +17,7 @@ namespace vt_encrypchat.Presentation.WebModels.Extensions
         {
             return new()
             {
+                Id = message.Id,
                 FromValue = message.FromValue,
                 ToValue = message.ToValue,
                 DateTime = message.Time,

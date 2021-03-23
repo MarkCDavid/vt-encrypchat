@@ -18,6 +18,7 @@ export interface GetMessagesResponse {
 }
 
 export interface Message {
+  id: string;
   fromValue: string;
   toValue: string;
   dateTime: Date;
@@ -26,6 +27,7 @@ export interface Message {
 }
 
 export interface DecryptedMessage {
+  id: string;
   message: string;
   valid: boolean;
   time: Date;

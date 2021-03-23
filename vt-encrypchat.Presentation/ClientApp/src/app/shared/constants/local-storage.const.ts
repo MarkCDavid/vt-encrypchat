@@ -1,4 +1,5 @@
 export enum LOCALSTORE {
-  GPGKEY = 'gpgKey',
+  PRIVATE_KEY = 'privateKey',
+  PUBLIC_KEY = 'publicKey',
   USERID = 'userId',
 }

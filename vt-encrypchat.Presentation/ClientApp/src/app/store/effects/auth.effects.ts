@@ -3,8 +3,8 @@ import {Store} from '@ngrx/store';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {AuthService} from '../../services/auth.service';
 import {
-  checkAuthentication, checkAuthenticationFail, checkAuthenticationSuccess,
-  go,
+  checkAuthentication, checkAuthenticationFail, checkAuthenticationSuccess, getUserSettings,
+  go, loadUserPublicKey,
   signIn,
   signInFail,
   signInSuccess,
@@ -20,6 +20,9 @@ import {mapSignInSuccessPayload} from './mappers/auth/sign-in.mapper';
 import {mapGeneralError} from './mappers/shared/general-error.mapper';
 import {mapCheckAuthenticationSuccessPayload} from './mappers/auth/check-authentication.mapper';
 import {GeneralError} from '../../models/general-error';
+import {GetUserSettingsRequest} from "../../services/models/user/get-user-settings.model";
+import {GetUserSettingsPayload} from "../actions/payloads/user/get-user-settings.payload";
+import {mapLoadUserPublicKeyPayload} from "./mappers/user/load-user-public-key.mapper";
 
 @Injectable()
 export class AuthEffects {
@@ -56,6 +59,9 @@ export class AuthEffects {
         tap(( { payload } ) => {
           this.store.dispatch(toastOK( { message: 'Signed in successfully!' }));
           this.store.dispatch(go({ path: ROUTES.Home }));
+          const request = { userId: payload.userId } as GetUserSettingsRequest;
+          const settingsPayload = { request: request } as GetUserSettingsPayload;
+          this.store.dispatch(getUserSettings( { payload: settingsPayload } ));
         })
       ),
     {dispatch: false}
@@ -128,11 +134,12 @@ export class AuthEffects {
         tap(( { payload } ) => {
           this.authService.IsAuthenticated().subscribe(
             authenticated => {
-              const authenticatedWithoutGPG = authenticated && !payload.gpgKey;
+              const authenticatedWithoutGPG = authenticated && !payload.privateKey;
               if (!authenticated || authenticatedWithoutGPG) {
                 this.store.dispatch(checkAuthenticationFail());
               } else {
                 this.store.dispatch(checkAuthenticationSuccess( { payload: mapCheckAuthenticationSuccessPayload(payload) }));
+                this.store.dispatch(loadUserPublicKey({ payload: mapLoadUserPublicKeyPayload(payload) }));
               }
             }
           );

@@ -34,7 +34,7 @@ const reducer: ActionReducer<State> = createReducer(
     ...state,
     signInError: undefined,
     userId: payload.userId,
-    privateGPGKey: payload.gpgKey
+    privateGPGKey: payload.privateKey
   })),
   on(signInFail, (state, { payload }) => ({
     ...state,
@@ -74,7 +74,7 @@ const reducer: ActionReducer<State> = createReducer(
   on(checkAuthenticationSuccess, (state, { payload }) => ({
     ...state,
     userId: payload.userId,
-    privateGPGKey: payload.gpgKey
+    privateGPGKey: payload.privateKey,
   })),
   on(checkAuthenticationFail, (state) => ({
     ...state,

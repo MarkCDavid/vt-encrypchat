@@ -3,8 +3,9 @@ import {Store} from '@ngrx/store';
 import {checkAuthentication} from './store/actions';
 import {LOCALSTORE} from './shared/constants/local-storage.const';
 import {CheckAuthenticationPayload} from './store/actions/payloads/auth/check-authentication.payload';
-import {getPrivateGPGKey, getUserId} from './store/selectors';
+import {getPrivateGPGKey, getPublicGPGKey, getUserId} from './store/selectors';
 import {skip} from 'rxjs/operators';
+import {Local} from "protractor/built/driverProviders";
 
 @Component({
   selector: 'app-root',
@@ -20,9 +21,17 @@ export class AppComponent implements OnInit {
 
     this.store.select(getPrivateGPGKey).pipe(skip(1)).subscribe(gpgKey => {
       if (gpgKey !== undefined) {
-        localStorage.setItem(LOCALSTORE.GPGKEY, gpgKey);
+        localStorage.setItem(LOCALSTORE.PRIVATE_KEY, gpgKey);
       } else {
-        localStorage.removeItem(LOCALSTORE.GPGKEY);
+        localStorage.removeItem(LOCALSTORE.PRIVATE_KEY);
+      }
+    });
+
+    this.store.select(getPublicGPGKey).pipe(skip(1)).subscribe(gpgKey => {
+      if (gpgKey !== undefined) {
+        localStorage.setItem(LOCALSTORE.PUBLIC_KEY, gpgKey);
+      } else {
+        localStorage.removeItem(LOCALSTORE.PUBLIC_KEY);
       }
     });
 
@@ -35,7 +44,8 @@ export class AppComponent implements OnInit {
     });
 
     const payload = {
-      gpgKey: localStorage.getItem(LOCALSTORE.GPGKEY),
+      privateKey: localStorage.getItem(LOCALSTORE.PRIVATE_KEY),
+      publicKey: localStorage.getItem(LOCALSTORE.PUBLIC_KEY),
       userId: localStorage.getItem(LOCALSTORE.USERID)
     } as CheckAuthenticationPayload;
 

@@ -3,6 +3,6 @@ import {CheckAuthenticationPayload, CheckAuthenticationSuccessPayload} from '../
 export function mapCheckAuthenticationSuccessPayload(payload: CheckAuthenticationPayload): CheckAuthenticationSuccessPayload {
   return {
     userId: payload.userId,
-    gpgKey: payload.gpgKey
+    privateKey: payload.privateKey,
   };
 }

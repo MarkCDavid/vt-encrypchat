@@ -3,7 +3,7 @@ import {
   getUserSettings,
   getUserSettingsFail,
   getUserSettingsSuccess,
-  getUsersSuccess,
+  getUsersSuccess, loadUserPublicKey,
   setUserSettings,
   setUserSettingsFail,
   setUserSettingsSuccess,
@@ -40,13 +40,17 @@ const reducer: ActionReducer<State> = createReducer(
   on(setUserSettings, (state) => ({
     ...state,
   })),
-  on(setUserSettingsSuccess, (state) => ({
+  on(setUserSettingsSuccess, (state, { payload }) => ({
     ...state,
-    displayName: state.displayName,
-    publicGPGKey: state.publicGPGKey,
+    displayName: payload.displayName,
+    publicGPGKey: payload.gpgKey,
   })),
   on(setUserSettingsFail, (state) => ({
     ...state,
+  })),
+  on(loadUserPublicKey, (state, { payload }) => ({
+    ...state,
+    publicGPGKey: payload.publicKey
   })),
   on(getUsersSuccess, (state, { payload }) => ({
     ...state,

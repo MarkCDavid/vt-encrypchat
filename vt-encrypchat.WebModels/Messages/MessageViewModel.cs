@@ -5,6 +5,7 @@ namespace vt_encrypchat.Presentation.WebModels.Messages
 {
     public class MessageViewModel
     {
+        public string Id { get; set; }
         public string FromValue { get; set; }
         public string ToValue { get; set; }
         

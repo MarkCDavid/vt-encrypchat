@@ -47,7 +47,7 @@ export class SignInComponent implements OnInit {
     reader.addEventListener('load', (event: ProgressEvent) => {
       const fileReader = event.target as FileReader;
       const gpgKey = fileReader.result as string;
-      const payload = { request: request, gpgKey: gpgKey } as SignInPayload;
+      const payload = { request: request, privateKey: gpgKey } as SignInPayload;
       this.store.dispatch(signIn({ payload: payload }));
     });
     reader.readAsText(gpgKeyFile);

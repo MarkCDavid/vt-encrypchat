@@ -39,7 +39,7 @@ export class MessageService {
     } as SendMessageRequest)
 
     return this.http.post(url, body, options).pipe(
-      map(() => { }),
+      map(() => { console.log("TOP_KEK") }),
       catchError(httpError => throwError(handleError(httpError)) )
     );
   }
@@ -51,12 +51,12 @@ export class MessageService {
       map(async (messages: Message[]) => {
 
         let decryptedMessages = await Promise.all(messages.map(async message => {
-          let decryptedMessage = await this.crypto.decrypt(message.fromValue, serviceRequest.senderPrivateGPGKey);
-          let publicKey = message.from.id === serviceRequest.senderId ? serviceRequest.senderPublicGPGKey : serviceRequest.recipientPublicGPGKey;
-          let valid = await this.crypto.checkSignature(decryptedMessage, publicKey);
-
+          const isSender = message.from.id === serviceRequest.senderId;
+          let decryptedMessage = await this.crypto.decrypt(isSender ? message.fromValue : message.toValue, serviceRequest.senderPrivateGPGKey);
+          let valid = await this.crypto.checkSignature(decryptedMessage, isSender ? serviceRequest.senderPublicGPGKey : serviceRequest.recipientPublicGPGKey);
           return {
-            message: decryptedMessage,
+            id: message.id,
+            message: await this.crypto.cleartext(decryptedMessage),
             valid: valid,
             time: message.dateTime,
             from: message.from,
