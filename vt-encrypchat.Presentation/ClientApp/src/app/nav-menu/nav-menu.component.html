@@ -6,7 +6,7 @@
       <a class="navbar-brand" (click)="Home()">EncrypChat</a>
       <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end" >
         <ul class="navbar-nav flex-grow">
-          <li>
+          <li *ngIf="isAuthenticated$ | async" >
             Logged in: {{ displayName$ | async }}
           </li>
           <li>

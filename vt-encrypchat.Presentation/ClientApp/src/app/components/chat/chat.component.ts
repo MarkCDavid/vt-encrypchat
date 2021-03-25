@@ -25,6 +25,8 @@ import {
   filledMessagesPollingDataModel,
   mapToPollMessagesRequest
 } from "../../store/selectors/models/messages-polling-data.model";
+import {ActivatedRoute} from "@angular/router";
+import {PARAMS} from "../../shared/constants/params.const";
 
 @Component({
   selector: 'app-chat',
@@ -43,6 +45,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<{}>,
+    private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private service: MessageService) {
   }
@@ -61,19 +64,23 @@ export class ChatComponent implements OnInit, OnDestroy {
       }
     })
 
-    this.messagesPolling = setInterval(() => {
-      this.store.select(getMessagesPollingData)
-        .pipe(skipWhile(data => !filledMessagesPollingDataModel(data)), take(1))
-        .subscribe(data => {
-          this.service.PollMessages(mapToPollMessagesRequest(data)).subscribe(response => {
-            if (response.newMessages) {
-              this.scheduleGetMessages();
-            }
-          })
-        })
-    }, 5000);
-
-    this.scheduleGetMessages();
+    const recipientId = this.route.snapshot.queryParamMap.get(PARAMS.Recipient);
+    this.recipient$
+      .pipe(skipWhile(recipient => recipient == null || recipient.id !== recipientId), take(1))
+      .subscribe(() => {
+        this.messagesPolling = setInterval(() => {
+          this.store.select(getMessagesPollingData)
+            .pipe(skipWhile(data => !filledMessagesPollingDataModel(data)), take(1))
+            .subscribe(data => {
+              this.service.PollMessages(mapToPollMessagesRequest(data)).subscribe(response => {
+                if (response.newMessages) {
+                  this.scheduleGetMessages();
+                }
+              })
+            })
+        }, 1000);
+        this.scheduleGetMessages();
+      });
   }
 
   ngOnDestroy(): void {

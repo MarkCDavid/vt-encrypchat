@@ -13,3 +13,7 @@
   margin-right: auto;
   background: #1b6ec2;
 }
+
+.encrypted {
+  border: #ff8787 dashed 2px;
+}

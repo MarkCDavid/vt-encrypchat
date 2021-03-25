@@ -1,5 +1,6 @@
 import {Action, ActionReducer, createReducer, on} from '@ngrx/store';
 import {
+  clearMessages,
   getMessages,
   getMessagesFail,
   getMessagesSuccess,
@@ -46,6 +47,10 @@ const reducer: ActionReducer<State> = createReducer(
     messages: payload.messages,
   })),
   on(getMessagesFail, (state) => ({
+    ...state,
+    messages: []
+  })),
+  on(clearMessages, (state) => ({
     ...state,
     messages: []
   })),

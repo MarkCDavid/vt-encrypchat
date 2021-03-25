@@ -3,7 +3,7 @@ import {Store} from "@ngrx/store";
 import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from "@angular/router";
 import {PARAMS} from "../shared/constants/params.const";
 import {getCurrentRecipient} from "../store/selectors";
-import {getRecipient} from "../store/actions";
+import {clearMessages, getRecipient} from "../store/actions";
 import {GetUsersRequest} from "../services/models/user/get-users.model";
 import {GetRecipientPayload} from "../store/actions/payloads/messages/get-recipient.payload";
 import {take} from "rxjs/operators";
@@ -18,6 +18,7 @@ export class ChatGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
+    this.store.dispatch(clearMessages());
     const recipientId = route.queryParamMap.get(PARAMS.Recipient);
     this.store.select(getCurrentRecipient).pipe(take(1)).subscribe(recipient => {
       if (recipient != null && recipient.id === recipientId) {

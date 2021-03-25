@@ -31,4 +31,8 @@ export class ChatMessageComponent implements OnInit {
     return !this.isRecipientMessage();
   }
 
+  public isEncrypted() : boolean {
+    return !this.message.decrypted;
+  }
+
 }

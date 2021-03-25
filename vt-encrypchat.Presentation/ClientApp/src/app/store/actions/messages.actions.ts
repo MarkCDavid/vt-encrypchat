@@ -13,6 +13,7 @@ export enum MessagesActions {
   SendMessage = '[Messages] Send Message',
   SendMessageSuccess = '[Messages] Send Message Success',
   SendMessageFail = '[Messages] Send Message Fail',
+  ClearMessages = '[Messages] Clear Messages',
 }
 
 export const getRecipient = createAction(MessagesActions.GetRecipient, props<{ payload: GetRecipientPayload }>());
@@ -32,3 +33,5 @@ export const sendMessage = createAction(MessagesActions.SendMessage, props<{ pay
 export const sendMessageSuccess = createAction(MessagesActions.SendMessageSuccess);
 
 export const sendMessageFail = createAction(MessagesActions.SendMessageFail);
+
+export const clearMessages = createAction(MessagesActions.ClearMessages);
