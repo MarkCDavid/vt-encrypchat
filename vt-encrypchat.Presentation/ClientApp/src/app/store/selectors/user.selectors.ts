@@ -9,3 +9,5 @@ export const getPublicGPGKey = createSelector(getUserState, (state) => state.pub
 export const getDisplayName = createSelector(getUserState, (state) => state.displayName);
 
 export const getFoundUsers = createSelector(getUserState, (state) => state.users);
+
+export const getUserSettingsLoaded = createSelector(getUserState, (state) => state.userSettingsLoaded);

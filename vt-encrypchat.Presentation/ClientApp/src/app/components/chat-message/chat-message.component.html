@@ -1,9 +1,8 @@
-
 <mat-card class="chat-bubble" [ngClass]="{
   'recipient': isRecipientMessage(),
   'sender': isSenderMessage()
 }">
-  <mat-card-content >
+  <mat-card-content>
     <span *ngIf="message.decrypted">{{ message.message }}</span>
     <span *ngIf="!message.decrypted"> ENCRYPTED </span>
   </mat-card-content>

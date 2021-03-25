@@ -44,11 +44,6 @@ export class UserSettingsComponent implements OnInit {
       control.setValue(gpgKey);
     });
 
-    this.store.select(getUserId).pipe(skipWhile(value => value === undefined)).subscribe(userId => {
-      const request = {userId: userId} as GetUserSettingsRequest;
-      const payload = {request: request} as GetUserSettingsPayload;
-      this.store.dispatch(getUserSettings({payload: payload}));
-    });
   }
 
   onSave() {

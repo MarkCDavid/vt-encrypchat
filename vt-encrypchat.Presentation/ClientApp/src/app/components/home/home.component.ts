@@ -8,7 +8,6 @@ import {debounceTime} from 'rxjs/operators';
 import {GetUsersPayload} from '../../store/actions/payloads/user/get-users.payload';
 import {GetUsersRequest} from '../../services/models/user/get-users.model';
 import {getUsers} from '../../store/actions';
-import {MessageService} from "../../services/message.service";
 
 @Component({
   selector: 'app-home',
@@ -20,20 +19,20 @@ export class HomeComponent implements OnInit {
   public users$!: Observable<User[]>;
   public search = new FormControl('');
 
-  constructor(private store: Store<{}>) { }
+  constructor(private store: Store<{}>) {
+  }
 
   ngOnInit(): void {
     this.users$ = this.store.select(getFoundUsers);
+    this.search.valueChanges
+      .pipe(debounceTime(1000))
+      .subscribe(value => {
+        const request = {search: value} as GetUsersRequest;
+        const payload = {request: request} as GetUsersPayload;
+        this.store.dispatch(getUsers({payload: payload}));
+      });
 
-    this.search.valueChanges.pipe(debounceTime(1000)).subscribe(value => {
-      const request = { search: value } as GetUsersRequest;
-      const payload = { request: request } as GetUsersPayload;
-      this.store.dispatch(getUsers({ payload: payload }));
-    });
-
-    const request = { search: '' } as GetUsersRequest;
-    const payload = { request: request } as GetUsersPayload;
-    this.store.dispatch(getUsers({ payload: payload }));
+    this.search.setValue('');
   }
 
 

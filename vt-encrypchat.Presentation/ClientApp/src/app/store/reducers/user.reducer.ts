@@ -13,12 +13,14 @@ import {User} from '../../models/user';
 export interface State {
   displayName: string;
   publicGPGKey: string;
+  userSettingsLoaded: boolean;
   users: User[];
 }
 
 export const initialState: State = {
   displayName: '',
   publicGPGKey: '',
+  userSettingsLoaded: false,
   users: [],
 };
 
@@ -30,12 +32,14 @@ const reducer: ActionReducer<State> = createReducer(
   on(getUserSettingsSuccess, (state, { payload }) => ({
     ...state,
     displayName: payload.displayName,
-    publicGPGKey: payload.gpgKey
+    publicGPGKey: payload.gpgKey,
+    userSettingsLoaded: true,
   })),
   on(getUserSettingsFail, (state) => ({
     ...state,
     displayName: '',
     publicGPGKey: '',
+    userSettingsLoaded: false,
   })),
   on(setUserSettings, (state) => ({
     ...state,

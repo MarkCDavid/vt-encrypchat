@@ -61,6 +61,8 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import { UserCardComponent } from './components/user-card/user-card.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatMessageComponent } from './components/chat-message/chat-message.component';
+import {UserSettingsGuard} from "./guards/user-settings-guard.service";
+import {ChatGuard} from "./guards/chat-guard.service";
 
 const angularMaterialImports = [
   MatAutocompleteModule,
@@ -122,7 +124,7 @@ const angularMaterialImports = [
       {
         path: ROUTES.Home,
         component: HomeComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, UserSettingsGuard],
         pathMatch: 'full'
       },
       {
@@ -136,12 +138,12 @@ const angularMaterialImports = [
       {
         path: ROUTES.UserSettings,
         component: UserSettingsComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, UserSettingsGuard]
       },
       {
         path: ROUTES.Chat,
         component: ChatComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard, UserSettingsGuard, ChatGuard]
       },
     ]),
     BrowserAnimationsModule,

@@ -1,20 +1,20 @@
 import {Action, ActionReducer, createReducer, on} from '@ngrx/store';
 import {
-  getMessages, getMessagesFail,
+  getMessages,
+  getMessagesFail,
   getMessagesSuccess,
-  getUserSettings,
-  getUserSettingsFail,
-  getUserSettingsSuccess,
-  getUsersSuccess, loadUserPublicKey, sendMessage, sendMessageFail, sendMessageSuccess,
-  setUserSettings,
-  setUserSettingsFail,
-  setUserSettingsSuccess,
+  getRecipient,
+  getRecipientSuccess,
+  sendMessage,
+  sendMessageFail,
+  sendMessageSuccess,
 } from '../actions';
 import {User} from '../../models/user';
 import {Message} from "../../models/message";
 
 export interface State {
-  messages: Message[]
+  recipient?: User;
+  messages: Message[];
   sending: boolean;
   sent: boolean;
 }
@@ -27,6 +27,17 @@ export const initialState: State = {
 
 const reducer: ActionReducer<State> = createReducer(
   initialState,
+  on(getRecipient, (state) => ({
+    ...state,
+  })),
+  on(getRecipientSuccess, (state, { payload }) => ({
+    ...state,
+    recipient: payload.recipient,
+  })),
+  on(getMessagesFail, (state) => ({
+    ...state,
+    recipient: undefined,
+  })),
   on(getMessages, (state) => ({
     ...state,
   })),

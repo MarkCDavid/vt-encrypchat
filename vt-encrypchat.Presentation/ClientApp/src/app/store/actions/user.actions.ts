@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import {GetUserSettingsPayload, GetUserSettingsSuccessPayload} from './payloads/user/get-user-settings.payload';
-import {SetUserSettingsPayload, SetUserSettingsSuccessPayload} from './payloads/user/set-user-settings.payload';
-import {GeneralErrorPayload} from './payloads/shared/general-error.payload';
-import {GetUsersPayload, GetUsersSuccessPayload} from './payloads/user/get-users.payload';
-import {LoadUserPublicKeyPayload} from "./payloads/user/load-user-public-key.payload";
+import { GetUserSettingsPayload, GetUserSettingsSuccessPayload } from './payloads/user/get-user-settings.payload';
+import { SetUserSettingsPayload, SetUserSettingsSuccessPayload } from './payloads/user/set-user-settings.payload';
+import { GeneralErrorPayload } from './payloads/shared/general-error.payload';
+import { GetUsersPayload, GetUsersSuccessPayload } from './payloads/user/get-users.payload';
+import { LoadUserPublicKeyPayload } from "./payloads/user/load-user-public-key.payload";
 
 export enum UserActions {
   GetUserSettings = '[User] Get User Settings',

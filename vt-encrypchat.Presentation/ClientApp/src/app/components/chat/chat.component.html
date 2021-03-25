@@ -1,6 +1,6 @@
 <mat-card class="chat-title-container">
   <mat-card-content class="chat-title">
-    Talking with: {{ recipient?.displayName }}
+    Talking with: {{ (recipient$ | async)?.displayName }}
   </mat-card-content>
 </mat-card>
 <mat-divider></mat-divider>
@@ -8,8 +8,7 @@
   <div class="chat-messages-container">
     <app-chat-message
       *ngFor="let message of messages$ | async"
-      [message]="message"
-      [recipient]="this.recipient?.id">
+      [message]="message">
     </app-chat-message>
   </div>
 </div>
