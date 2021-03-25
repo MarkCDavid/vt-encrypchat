@@ -1,4 +1,5 @@
 import {User} from "../../../models/user";
+import {Message} from "../../../models/message";
 
 export interface GetMessagesServiceRequest {
   senderId: string;
@@ -14,10 +15,10 @@ export interface GetMessagesRequest {
 }
 
 export interface GetMessagesResponse {
-  messages: DecryptedMessage[]
+  messages: Message[]
 }
 
-export interface Message {
+export interface EncryptedMessage {
   id: string;
   fromValue: string;
   toValue: string;
@@ -26,12 +27,5 @@ export interface Message {
   to: User;
 }
 
-export interface DecryptedMessage {
-  id: string;
-  message: string;
-  valid: boolean;
-  time: Date;
-  from: User;
-  to: User;
-}
+
 

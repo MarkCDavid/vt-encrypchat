@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { tap } from 'rxjs/operators';
-import { go } from '../actions';
+import {go, goExtras} from '../actions';
 
 @Injectable()
 export class RoutingEffects {
@@ -12,8 +12,19 @@ export class RoutingEffects {
     () =>
       this.actions$.pipe(
         ofType(go),
-        tap(({ path }) => {
-          this.router.navigate([path]);
+        tap(async ({ path }) => {
+          await this.router.navigate([path]);
+        })
+      ),
+    { dispatch: false }
+  );
+
+  public goToSpecificRouteWithExtras$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(goExtras),
+        tap(async ({ path, extras }) => {
+          await this.router.navigate([path], extras);
         })
       ),
     { dispatch: false }

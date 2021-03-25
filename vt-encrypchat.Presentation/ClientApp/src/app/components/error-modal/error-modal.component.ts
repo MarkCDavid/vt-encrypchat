@@ -11,7 +11,7 @@ export class ErrorModalComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ErrorModalComponent>,
-               @Inject(MAT_DIALOG_DATA) public data: GeneralError) { }
+               @Inject(MAT_DIALOG_DATA) public data: GeneralError | Error) { }
 
   ngOnInit() {
   }

@@ -7,6 +7,9 @@
       <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end" >
         <ul class="navbar-nav flex-grow">
           <li>
+            Logged in: {{ displayName$ | async }}
+          </li>
+          <li>
             <button *ngIf="!(isAuthenticated$ | async)"  mat-raised-button (click)="SignUp()">Sign Up</button>
           </li>
           <li>

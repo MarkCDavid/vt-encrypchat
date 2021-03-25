@@ -138,6 +138,11 @@ const angularMaterialImports = [
         component: UserSettingsComponent,
         canActivate: [AuthGuard]
       },
+      {
+        path: ROUTES.Chat,
+        component: ChatComponent,
+        canActivate: [AuthGuard]
+      },
     ]),
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers),

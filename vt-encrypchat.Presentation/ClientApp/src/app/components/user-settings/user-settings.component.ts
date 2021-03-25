@@ -6,7 +6,7 @@ import {checkAuthenticationFail, getUserSettings, setUserSettings} from '../../s
 import {GetUserSettingsPayload} from '../../store/actions/payloads/user/get-user-settings.payload';
 import {GetUserSettingsRequest} from '../../services/models/user/get-user-settings.model';
 import {SetUserSettingsRequest} from '../../services/models/user/set-user-settings.model';
-import {skipWhile} from 'rxjs/operators';
+import {skip, skipWhile} from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-settings',
@@ -51,14 +51,12 @@ export class UserSettingsComponent implements OnInit {
     });
   }
 
-  onSignUp() {
+  onSave() {
     this.userSettingsForm.markAsDirty();
     if (!this.userSettingsForm.valid) {
       return;
     }
-
-    this.store.select(getUserId).subscribe(userId => {
-
+    this.store.select(getUserId).pipe(skipWhile(value => value === undefined)).subscribe(userId => {
       const rawData = this.userSettingsForm.getRawValue();
       const request = {
         userId: userId,

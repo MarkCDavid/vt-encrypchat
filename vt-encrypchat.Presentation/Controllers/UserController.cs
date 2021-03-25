@@ -43,7 +43,7 @@ namespace vt_encrypchat.Presentation.Controllers
         {
             var request = new SearchUserByDisplayNameRequest
             {
-                DisplayName = search
+                Search = search
             };
 
             var response = await _searchUserByDisplayNameOperation.Execute(request);

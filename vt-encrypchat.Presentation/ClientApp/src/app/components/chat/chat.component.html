@@ -1,0 +1,24 @@
+<mat-card class="chat-title-container">
+  <mat-card-content class="chat-title">
+    Talking with: {{ recipient?.displayName }}
+  </mat-card-content>
+</mat-card>
+<mat-divider></mat-divider>
+<div class="chat-container">
+  <div class="chat-messages-container">
+    <app-chat-message
+      *ngFor="let message of messages$ | async"
+      [message]="message"
+      [recipient]="this.recipient?.id">
+    </app-chat-message>
+  </div>
+</div>
+<mat-divider></mat-divider>
+<div [formGroup]="textInputGroup">
+  <mat-form-field class="text-input">
+    <mat-label>Send a message</mat-label>
+    <textarea matInput placeholder="Message..." formControlName="textInput"></textarea>
+  </mat-form-field>
+  <button mat-raised-button class="send-button" (click)="send()">Send</button>
+</div>
+

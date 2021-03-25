@@ -10,7 +10,7 @@ namespace vt_encrypchat.Application.Operations.Contracts.User
 
     public class SearchUserByDisplayNameRequest
     {
-        public string DisplayName { get; set; }
+        public string Search { get; set; }
     }
 
     public class SearchUserByDisplayNameResponse

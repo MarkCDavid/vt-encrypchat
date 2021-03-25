@@ -35,7 +35,7 @@ namespace vt_encrypchat.UnitTests.Application.Operations.User
 
             var operation = new SearchUserByDisplayNameOperation(_logger, userRepositoryMock.Object);
 
-            var request = new SearchUserByDisplayNameRequest { DisplayName = "displayName" };
+            var request = new SearchUserByDisplayNameRequest { Search = "displayName" };
 
             var response = await operation.Execute(request);
 
@@ -53,7 +53,7 @@ namespace vt_encrypchat.UnitTests.Application.Operations.User
 
             var operation = new SearchUserByDisplayNameOperation(_logger, userRepositoryMock.Object);
 
-            var request = new SearchUserByDisplayNameRequest { DisplayName = "displayName" };
+            var request = new SearchUserByDisplayNameRequest { Search = "displayName" };
 
             var response = await operation.Execute(request);
 

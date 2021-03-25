@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import * as bcrypt from 'bcryptjs';
 import * as openpgp from 'openpgp';
+import {Store} from "@ngrx/store";
+import {toastError} from "../store/actions";
+import {MessageDecryption} from "./models/message/message-decryption.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CryptoService {
 
-  constructor() { }
+  constructor(private store: Store<{}>) { }
 
   public hash(value: string): string {
     return bcrypt.hashSync(value, "$2a$10$GY93Pgew4tiVQ4r9hvBpOe");
@@ -23,6 +26,7 @@ export class CryptoService {
         privateKeys: _privateKey
       });
     } catch {
+      this.store.dispatch(toastError({message: "Failed to sign the message!"}));
       return value;
     }
   }
@@ -44,6 +48,7 @@ export class CryptoService {
       const {verified} = verification.signatures[0];
       return await verified || false;
     } catch {
+      this.store.dispatch(toastError({message: "Failed to verify signature of the message!"}));
       return false;
     }
   }
@@ -57,11 +62,12 @@ export class CryptoService {
         publicKeys: _publicKey,
       });
     } catch {
+      this.store.dispatch(toastError({message: "Failed to encrypt the message!"}));
       return value;
     }
   }
 
-  public async decrypt(value: string, privateKey: string): Promise<string> {
+  public async decrypt(value: string, privateKey: string): Promise<MessageDecryption> {
     try {
       const _privateKey = await openpgp.readKey({armoredKey: privateKey});
 
@@ -74,10 +80,11 @@ export class CryptoService {
         privateKeys: _privateKey
       });
 
-      return decrypted;
+      return { message: decrypted, decrypted: true } as MessageDecryption;
     }
     catch {
-      return value;
+      this.store.dispatch(toastError({message: "Failed to decrypt the message!"}));
+      return { message: value, decrypted: false } as MessageDecryption;
     }
   }
 
@@ -86,6 +93,7 @@ export class CryptoService {
       const message = await openpgp.readCleartextMessage({cleartextMessage: value});
       return message.getText();
     } catch {
+      this.store.dispatch(toastError({message: "Failed to extract cleartext message!"}));
       return value;
     }
   }

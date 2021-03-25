@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -49,6 +50,36 @@ namespace vt_encrypchat.Presentation.Controllers
             var mapped = response.MapToViewModel();
 
             return Ok(mapped);
+        }
+        
+        [HttpGet("{from}/{to}/{lastMessageId}")]
+        [Produces("application/json")]
+        public async Task<IActionResult> NewMessages(
+            [FromRoute] string from,
+            [FromRoute] string to,
+            [FromRoute] string lastMessageId)
+        {
+            if (!RequestForAuthorizedId(from)) return Unauthorized();
+
+            var request = new GetUserMessagesRequest
+            {
+                Sender = from,
+                Recipient = to,
+                Count = 1
+            };
+
+            var response = await _getUserMessagesResponse.Execute(request);
+            if (!response.Messages.Any())
+            {
+                return Ok(PollMessagesStatusViewModel.NoNewMesssages());
+            }
+
+            if (response.Messages.First().Id == lastMessageId)
+            {
+                return Ok(PollMessagesStatusViewModel.NoNewMesssages());
+            } 
+            
+            return Ok(PollMessagesStatusViewModel.HasNewMesssages());
         }
 
 

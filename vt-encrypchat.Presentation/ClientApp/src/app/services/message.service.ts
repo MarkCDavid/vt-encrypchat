@@ -7,12 +7,12 @@ import {API} from "../shared/constants/api.const";
 import {catchError, map} from "rxjs/operators";
 import {handleError} from "../shared/handlers/http-error-handler";
 import {
-  DecryptedMessage,
-  GetMessagesRequest,
   GetMessagesResponse,
   GetMessagesServiceRequest,
-  Message
+  EncryptedMessage
 } from "./models/message/get-messages.model";
+import {Message} from "../models/message";
+import {PollMessagesRequest, PollMessagesResponse} from "./models/message/poll-messages.model";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,16 @@ export class MessageService {
     private http: HttpClient,
     private crypto: CryptoService
   ) { }
+
+  public PollMessages(request: PollMessagesRequest): Observable<PollMessagesResponse> {
+    const url = `${API.Prefix}/${API.Messages}/${request.senderId}/${request.recipientId}/${request.lastMessageId}`;
+    const options = { headers: {'Content-Type': 'application/json'} };
+
+    return this.http.get(url, options).pipe(
+      map((response: Object) => { return response as PollMessagesResponse }),
+      catchError(httpError => throwError(handleError(httpError)))
+    );
+  }
 
 
   public async SendMessage(serviceRequest: SendMessageServiceRequest): Promise<Observable<void>> {
@@ -39,7 +49,7 @@ export class MessageService {
     } as SendMessageRequest)
 
     return this.http.post(url, body, options).pipe(
-      map(() => { console.log("TOP_KEK") }),
+      map(() => { }),
       catchError(httpError => throwError(handleError(httpError)) )
     );
   }
@@ -47,25 +57,30 @@ export class MessageService {
   public async GetMessages(serviceRequest: GetMessagesServiceRequest): Promise<Observable<Promise<GetMessagesResponse>>> {
     const url = `${API.Prefix}/${API.Messages}/${serviceRequest.senderId}/${serviceRequest.recipientId}`;
 
-    return this.http.get<Message[]>(url, {}).pipe(
-      map(async (messages: Message[]) => {
+    return this.http.get<EncryptedMessage[]>(url, {}).pipe(
+      map(async (messages: EncryptedMessage[]) => {
 
         let decryptedMessages = await Promise.all(messages.map(async message => {
           const isSender = message.from.id === serviceRequest.senderId;
-          let decryptedMessage = await this.crypto.decrypt(isSender ? message.fromValue : message.toValue, serviceRequest.senderPrivateGPGKey);
-          let valid = await this.crypto.checkSignature(decryptedMessage, isSender ? serviceRequest.senderPublicGPGKey : serviceRequest.recipientPublicGPGKey);
+          let messageDecryption = await this.crypto.decrypt(isSender ? message.fromValue : message.toValue, serviceRequest.senderPrivateGPGKey);
+          let valid = await this.crypto.checkSignature(messageDecryption.message, isSender ? serviceRequest.senderPublicGPGKey : serviceRequest.recipientPublicGPGKey);
           return {
             id: message.id,
-            message: await this.crypto.cleartext(decryptedMessage),
+            message: await this.crypto.cleartext(messageDecryption.message),
+            decrypted: messageDecryption.decrypted,
             valid: valid,
             time: message.dateTime,
             from: message.from,
             to: message.to,
-          } as DecryptedMessage;
+          } as Message;
         }));
 
         return {
-          messages: decryptedMessages
+          messages: decryptedMessages.sort((a, b) => {
+            if(a.time > b.time) return 1;
+            if(a.time < b.time) return -1;
+            return 0;
+          })
         } as GetMessagesResponse;
       }),
       catchError(httpError => throwError(handleError(httpError)) )

@@ -22,7 +22,7 @@ namespace vt_encrypchat.Application.Operations.User
 
         public async Task<SearchUserByDisplayNameResponse> Execute(SearchUserByDisplayNameRequest request)
         {
-            var users = await _userRepository.GetUsers(request.DisplayName);
+            var users = await _userRepository.GetUsers(request.Search);
             return MapToResponse(users);
         }
 

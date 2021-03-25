@@ -1,0 +1,15 @@
+.chat-bubble {
+  max-width: 300px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.recipient {
+  margin-left: auto;
+  background: #bb0b34;
+}
+
+.sender {
+  margin-right: auto;
+  background: #1b6ec2;
+}
